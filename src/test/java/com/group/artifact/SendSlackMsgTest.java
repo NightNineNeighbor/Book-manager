@@ -34,4 +34,25 @@ public class SendSlackMsgTest {
         con.disconnect();
     }
 
+    @Test
+    public void writeInChannel() throws Exception{
+        URL url = new URL("https://slack.com/api/chat.postMessage");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setDoOutput(true);
+
+        byte[] out = "token=xoxb-450024235621-505388952356-JojzHEUnPQ5VUZ2zY8XhqXKy&channel=CD7KGTJ3E&text=tttt<@UD7QN97QS>"
+                .getBytes(StandardCharsets.UTF_8);
+        con.getOutputStream().write(out);
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) { // response 출력
+            System.out.println(inputLine);
+        }
+
+        in.close();
+        con.disconnect();
+    }
 }
