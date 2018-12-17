@@ -8,14 +8,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "/api")
 public class ApiSlackController {
-    Logger logger = LoggerFactory.getLogger(ApiSlackController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ApiSlackController.class);
 
     @PostMapping("/valid")
-    public String valid(@RequestBody ValidationVO vo) {
-        logger.info("validation msg : {}", vo.toString());
-        return vo.getChallenge();
+    public String valid(@RequestBody Map<String,String> map) {
+        logger.info("validation msg : {}", map.toString());
+        return map.get("challenge");
     }
 }
