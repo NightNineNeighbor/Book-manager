@@ -16,8 +16,15 @@ public class ApiSlackController {
     private static final Logger logger = LoggerFactory.getLogger(ApiSlackController.class);
 
     @PostMapping("/valid")
-    public String valid(@RequestBody Map<String,String> map) {
+    public String valid(@RequestBody Map<String,Object> map) {
         logger.info("validation msg : {}", map.toString());
-        return map.get("challenge");
+        if (map.containsKey("challenge")) {
+            return (String) map.get("challenge");
+        }
+        return doSomething(map);
+    }
+
+    private String doSomething(Map<String, Object> map) {
+        return null;
     }
 }
