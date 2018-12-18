@@ -1,58 +1,51 @@
 package com.group.artifact;
 
+import com.group.artifact.helper.HtmlFormDataBuilder;
+import com.group.artifact.vo.Token;
+import com.group.artifact.vo.Url;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SendSlackMsgTest {
-    private static final String URL = "https://hooks.slack.com/services/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";
-    private static final String DATA = "{\"channel\": \"#general\",\"username\": \"NNNbot\",\"text\": \"NNN is testing bot.\",\"icon_emoji\": \":smirk_cat:\"}";
+public class SendSlackMsgTest extends AcceptanceTest {
+    private static final Logger log = LoggerFactory.getLogger(SendSlackMsgTest.class);
+
+    @Autowired
+    private Token token;
 
     @Test
-    public void sendMsg() throws Exception {
-        URL url = new URL(URL);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        con.setDoOutput(true);
+    public void webhookTest() {
+        Map<String, String> request = new HashMap<>();
+        request.put("channel", "#general");
+        request.put("username", "NNNbot");
+        request.put("text", "NNN is testing a bot.");
+        request.put("icon_emoji", ":smirk_cat:");
 
-        byte[] out = DATA.getBytes(StandardCharsets.UTF_8);
-        con.getOutputStream().write(out);
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) { // response 출력
-            System.out.println(inputLine);
-        }
-
-        in.close();
-        con.disconnect();
+        ResponseEntity<String> response = template().postForEntity(Url.WEBHOOK, request, String.class);
+        log.info("response : {}", response.toString());
+        softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
-    public void writeInChannel() throws Exception{
-        URL url = new URL("https://slack.com/api/chat.postMessage");
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setDoOutput(true);
+    public void postMessageTest() {
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder.urlEncodedForm()
+                .addParameter("token", token.getBotToken())
+                .addParameter("channel", "CD7KGTJ3E")
+                .addParameter("text", "test message to <@UD7QN97QS>")
+                .build();
 
-        byte[] out = "token=xoxb-450024235621-505388952356-JojzHEUnPQ5VUZ2zY8XhqXKy&channel=CD7KGTJ3E&text=tttt<@UD7QN97QS>"
-                .getBytes(StandardCharsets.UTF_8);
-        con.getOutputStream().write(out);
+        ResponseEntity<String> response = template().postForEntity(Url.POST_MESSAGE, request, String.class);
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) { // response 출력
-            System.out.println(inputLine);
-        }
-
-        in.close();
-        con.disconnect();
+        log.info("request : {}", request.toString());
+        log.info("response : {}", response.toString());
+        softly.assertThat(response.getBody()).contains("\"ok\":true");
     }
 }
