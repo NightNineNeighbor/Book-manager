@@ -20,8 +20,8 @@ public class SlackService {
     public ResponseEntity<String> echo(JsonNode jsonNode) {
         HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder.urlEncodedForm()
                 .addParameter("token", token.getBotToken())
-                .addParameter("text", "<@" + jsonNode.get("user").asText() + ">'s Echo~~~ " + jsonNode.get("text").asText())
-                .addParameter("channel", jsonNode.get("channel").asText())
+                .addParameter("text", "<@" + jsonNode.get("event").get("user").asText() + ">'s Echo~~~ " + jsonNode.get("event").get("text").asText())
+                .addParameter("channel", jsonNode.get("event").get("channel").asText())
                 .build();
 
         ResponseEntity<String> response = restTemplate.postForEntity("https://slack.com/api/chat.postMessage", request, String.class);

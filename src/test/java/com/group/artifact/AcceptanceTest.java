@@ -18,7 +18,7 @@ public class AcceptanceTest {
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    TestRestTemplate template(){
+    public TestRestTemplate template(){
         return template;
     }
 
