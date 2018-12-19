@@ -23,10 +23,16 @@ public class ApiSlackController {
     public String valid(@RequestBody JsonNode jsonNode) throws Exception {
         logger.info("validation msg : {}", jsonNode.toString());
 
-        if ("message".equals(jsonNode.path("event").path("type").asText())) {
+        if ("message".equals(jsonNode.path("event").path("type").asText()) &&
+                !"bot_message".equals(jsonNode.path("event").path("subtype").asText())) {
             slackService.echo(jsonNode);
             return "OK";
         }
-        return jsonNode.get("challenge").asText();
+
+        if (jsonNode.has("challenge")) {
+            return jsonNode.get("challenge").asText();
+        }
+
+        return "NOT_MATCH";
     }
 }
