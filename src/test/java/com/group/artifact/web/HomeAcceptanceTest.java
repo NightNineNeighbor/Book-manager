@@ -1,5 +1,6 @@
-package com.group.artifact;
+package com.group.artifact.web;
 
+import com.group.artifact.AcceptanceTest;
 import com.group.artifact.helper.HtmlFormDataBuilder;
 import com.group.artifact.vo.Token;
 import com.group.artifact.vo.Url;

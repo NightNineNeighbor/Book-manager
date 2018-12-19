@@ -2,7 +2,6 @@ package com.group.artifact.web;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.group.artifact.service.SlackService;
-import com.group.artifact.vo.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +18,15 @@ public class ApiSlackController {
     @Autowired
     SlackService slackService;
 
-    @Autowired
-    Token token;
-
+    //todo : change mapping url
     @PostMapping("/valid")
     public String valid(@RequestBody JsonNode jsonNode) throws Exception {
         logger.info("validation msg : {}", jsonNode.toString());
 
-        if (!jsonNode.has("challenge") &&
-                jsonNode.get("event").has("user")) {
+        if ("message".equals(jsonNode.path("event").path("type").asText())) {
             slackService.echo(jsonNode);
             return "OK";
         }
         return jsonNode.get("challenge").asText();
     }
-
 }
