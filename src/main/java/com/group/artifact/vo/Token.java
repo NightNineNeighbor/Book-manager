@@ -23,11 +23,8 @@ public class Token {
 
     private void readToken() {
         Resource resource = resourceLoader.getResource("classpath:BotToken");
-        try {
-            InputStream inputstream = resource.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputstream));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))){
             botToken = reader.readLine();
-            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

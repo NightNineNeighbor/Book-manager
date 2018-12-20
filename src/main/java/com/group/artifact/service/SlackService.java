@@ -1,31 +1,26 @@
 package com.group.artifact.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.group.artifact.helper.HtmlFormDataBuilder;
-import com.group.artifact.vo.Token;
+import com.group.artifact.helper.RequestCreator;
+import com.group.artifact.vo.SlackAcceptor;
+import com.group.artifact.vo.Url;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Service("slackService")
 public class SlackService {
     @Autowired
-    Token token;
+    private Url url;
+
+    @Autowired
+    private RequestCreator requestCreator;
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public ResponseEntity<String> echo(JsonNode jsonNode) {
-        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder.urlEncodedForm()
-                .addParameter("token", token.getBotToken())
-                .addParameter("text", "<@" + jsonNode.get("event").get("user").asText() + ">'s Echo~~~ " + jsonNode.get("event").get("text").asText())
-                .addParameter("channel", jsonNode.get("event").get("channel").asText())
-                .build();
-
-        ResponseEntity<String> response = restTemplate.postForEntity("https://slack.com/api/chat.postMessage", request, String.class);
-        return response;
-
+    public ResponseEntity<String> echo(SlackAcceptor acceptor) {
+        return restTemplate.postForEntity(url.getPostMessage(),
+                requestCreator.echo(acceptor),
+                String.class);
     }
 }

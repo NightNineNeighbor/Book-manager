@@ -1,6 +1,24 @@
 package com.group.artifact.vo;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Url {
-    public static final String WEBHOOK = "https://hooks.slack.com/services/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";
-    public static final String POST_MESSAGE = "https://slack.com/api/chat.postMessage";
+    @Value("${webhook}")
+    private String webhook;
+    @Value("${postMessage}")
+    private String postMessage;
+
+    public Url() {
+    }
+
+    public String getWebhook() {
+        return webhook;
+    }
+
+
+    public String getPostMessage() {
+        return postMessage;
+    }
 }

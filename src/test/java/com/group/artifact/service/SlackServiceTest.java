@@ -1,19 +1,11 @@
 package com.group.artifact.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group.artifact.AcceptanceTest;
+import com.group.artifact.vo.SlackAcceptor;
+import com.group.artifact.vo.SlackEvent;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 public class SlackServiceTest extends AcceptanceTest {
 
@@ -22,14 +14,15 @@ public class SlackServiceTest extends AcceptanceTest {
 
     @Test
     public void echo() {
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> map = new HashMap<>();
-        map.put("user", "UD7QN97QS");
-        map.put("text", "test text");
-        map.put("channel","CD7KGTJ3E");
-        JsonNode jsonNode = mapper.valueToTree(map);
+        SlackEvent event = new SlackEvent();
+        event.setChannel("CD7KGTJ3E");
+        event.setUser("UD7QN97QS");
+        event.setText("test text");
 
-        ResponseEntity<String> response = slackService.echo(jsonNode);
+        SlackAcceptor acceptor = new SlackAcceptor();
+        acceptor.setEvent(event);
+
+        ResponseEntity<String> response = slackService.echo(acceptor);
         System.out.println(response.toString());
         softly.assertThat(response.getBody()).contains("\"ok\":true");
     }

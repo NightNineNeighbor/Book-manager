@@ -1,7 +1,7 @@
 package com.group.artifact.web;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.group.artifact.service.SlackService;
+import com.group.artifact.vo.SlackAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +20,14 @@ public class ApiSlackController {
 
     //todo : change mapping url
     @PostMapping("/valid")
-    public String valid(@RequestBody JsonNode jsonNode) throws Exception {
-        logger.info("validation msg : {}", jsonNode.toString());
-
-        if ("message".equals(jsonNode.path("event").path("type").asText()) &&
-                !"bot_message".equals(jsonNode.path("event").path("subtype").asText())) {
-            slackService.echo(jsonNode);
+    public String valid(@RequestBody SlackAcceptor acceptor) throws Exception {
+        if (acceptor.isUserMessageEvent()) {
+            slackService.echo(acceptor);
             return "OK";
         }
 
-        if (jsonNode.has("challenge")) {
-            return jsonNode.get("challenge").asText();
+        if (acceptor.isChallenge()) {
+            return acceptor.getChallenge();
         }
 
         return "NOT_MATCH";
