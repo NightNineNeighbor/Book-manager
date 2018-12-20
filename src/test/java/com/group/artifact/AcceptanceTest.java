@@ -2,6 +2,7 @@ package com.group.artifact;
 
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +18,10 @@ public class AcceptanceTest {
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    TestRestTemplate template(){
+    public TestRestTemplate template(){
         return template;
     }
 
+    @Test
+    public void test(){}
 }
