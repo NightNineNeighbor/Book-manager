@@ -50,4 +50,8 @@ public class SlackEvent {
     public boolean isUserMessageEvent() {
         return this.type.equals("message") && subtype == null;
     }
+
+    public boolean isBookInfoRequest() {
+        return this.text.contains("성공하는 프로그래밍 공부법");    //todo : make match algorithm
+    }
 }

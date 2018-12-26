@@ -19,6 +19,20 @@ public class ApiSlackControllerTest extends AcceptanceTest {
     private ResourceLoader resourceLoader;
 
     @Test
+    public void matchBookName(){
+        Resource resource = resourceLoader.getResource("classpath:requestBookInfo.json");
+        String json = JsonReader.read(resource);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(json, headers);
+
+        ResponseEntity<String> response = template().postForEntity("/api/valid", request, String.class);
+        log.info("response : {}", response.toString());
+        softly.assertThat(response.getBody()).contains("SEND BOOK INFO");
+    }
+
+    @Test
     public void echo() throws Exception {
         Resource resource = resourceLoader.getResource("classpath:messageEvent.json");
         String json = JsonReader.read(resource);
@@ -29,7 +43,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
         ResponseEntity<String> response = template().postForEntity("/api/valid", request, String.class);
         log.info("response : {}", response.toString());
-        softly.assertThat(response.getBody()).isEqualTo("OK");
+        softly.assertThat(response.getBody()).isEqualTo("ECHO");
     }
 
     @Test

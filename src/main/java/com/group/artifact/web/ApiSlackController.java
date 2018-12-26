@@ -16,14 +16,20 @@ public class ApiSlackController {
     private static final Logger logger = LoggerFactory.getLogger(ApiSlackController.class);
 
     @Autowired
-    SlackService slackService;
+    private SlackService slackService;
 
     //todo : change mapping url
     @PostMapping("/valid")
     public String valid(@RequestBody SlackAcceptor acceptor) throws Exception {
-        if (acceptor.isUserMessageEvent()) {
+
+        if (slackService.isBookInfoRequest(acceptor)) {
+            slackService.sendBookInfo(acceptor);
+            return "SEND BOOK INFO";
+        }
+
+        if (acceptor.isUserMessageEvent() ){
             slackService.echo(acceptor);
-            return "OK";
+            return "ECHO";
         }
 
         if (acceptor.isChallenge()) {
