@@ -1,7 +1,7 @@
 package com.group.artifact.helper;
 
 import com.group.artifact.domain.Book;
-import com.group.artifact.formet.BookInfo;
+import com.group.artifact.format.BookInfo;
 import com.group.artifact.vo.SlackAcceptor;
 import com.group.artifact.vo.Token;
 import org.springframework.beans.factory.annotation.Autowired;

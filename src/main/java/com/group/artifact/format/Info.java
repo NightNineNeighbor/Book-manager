@@ -1,4 +1,4 @@
-package com.group.artifact.formet;
+package com.group.artifact.format;
 
 public class Info {
     private String title;
