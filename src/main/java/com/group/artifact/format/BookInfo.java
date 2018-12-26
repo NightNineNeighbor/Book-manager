@@ -1,4 +1,4 @@
-package com.group.artifact.formet;
+package com.group.artifact.format;
 
 import com.group.artifact.domain.Book;
 
