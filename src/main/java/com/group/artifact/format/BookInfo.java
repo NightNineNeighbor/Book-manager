@@ -9,9 +9,14 @@ public class BookInfo {
     private String channel;
     private List<Info> attachments = new ArrayList<>();
 
+    public BookInfo(){}
+
+    public BookInfo(String channel) {
+        this.channel = channel;
+    }
+
     public static BookInfo of(Book book, String channel) {
-        BookInfo bookInfo = new BookInfo();
-        bookInfo.setChannel(channel);
+        BookInfo bookInfo = new BookInfo(channel);
         bookInfo.add(new Info(book.getTitle(), book.getBestReview()));
         bookInfo.add(new Info("저자", book.getAuthor()));
         bookInfo.add(new Info("목차", book.getContents()));

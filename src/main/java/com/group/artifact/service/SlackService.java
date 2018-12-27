@@ -17,8 +17,6 @@ public class SlackService {
     @Autowired
     private MessageSender messageSender;
 
-    private RestTemplate restTemplate = new RestTemplate();
-
     public ResponseEntity<String> echo(SlackAcceptor acceptor) {
         return messageSender.echo(acceptor);
     }

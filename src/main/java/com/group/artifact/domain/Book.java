@@ -1,9 +1,8 @@
 package com.group.artifact.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +10,11 @@ import java.util.List;
 public class Book {
     @Id
     private long id;
+    @Size(min = 1)
     private String title;
     @Lob
     private String contents;
+    @NotNull
     private String author;
     @OneToMany(mappedBy = "book")
     private List<Review> reviews = new ArrayList<>();

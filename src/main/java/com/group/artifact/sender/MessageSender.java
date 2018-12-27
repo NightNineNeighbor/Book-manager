@@ -11,7 +11,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class MessageSender {
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private Url url;
