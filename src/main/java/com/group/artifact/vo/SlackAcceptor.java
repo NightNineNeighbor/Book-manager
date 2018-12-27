@@ -35,4 +35,15 @@ public class SlackAcceptor {
     public String getEchoText() {
         return "<@" + event.getUser() + ">'s echo ~~~~" + event.getText();
     }
+
+    public boolean isBookInfoRequest() {
+        return event.isBookInfoRequest();
+    }
+
+    public String getTextWithoutSpacer() {
+        if (event != null) {
+            return this.event.getText().replace(" ", "");
+        }
+        return "";
+    }
 }

@@ -1,28 +1,21 @@
 package com.group.artifact.service;
 
 import com.group.artifact.AcceptanceTest;
-import com.group.artifact.vo.SlackAcceptor;
-import com.group.artifact.vo.SlackEvent;
+import com.group.artifact.fixture.Fixture;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 public class SlackServiceTest extends AcceptanceTest {
-
+    private static final Logger log = LoggerFactory.getLogger(SlackServiceTest.class);
     @Autowired
-    SlackService slackService;
+    private SlackService slackService;
 
     @Test
     public void echo() {
-        SlackEvent event = new SlackEvent();
-        event.setChannel("CD7KGTJ3E");
-        event.setUser("UD7QN97QS");
-        event.setText("test text");
-
-        SlackAcceptor acceptor = new SlackAcceptor();
-        acceptor.setEvent(event);
-
-        ResponseEntity<String> response = slackService.echo(acceptor);
+        ResponseEntity<String> response = slackService.echo(Fixture.echo);
         System.out.println(response.toString());
         softly.assertThat(response.getBody()).contains("\"ok\":true");
     }
