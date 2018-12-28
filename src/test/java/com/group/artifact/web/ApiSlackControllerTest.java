@@ -6,8 +6,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,12 +14,16 @@ import org.springframework.http.ResponseEntity;
 public class ApiSlackControllerTest extends AcceptanceTest {
     private static final Logger log = LoggerFactory.getLogger(ApiSlackControllerTest.class);
     @Autowired
-    private ResourceLoader resourceLoader;
+    private JsonReader jsonReader;
 
     @Test
-    public void matchBookName(){
-        Resource resource = resourceLoader.getResource("classpath:requestBookInfo.json");
-        String json = JsonReader.read(resource);
+    public void showReview() {
+
+    }
+
+    @Test
+    public void matchBookName() {
+        String json = jsonReader.read("requestBookInfo.json");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -34,8 +36,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
     @Test
     public void echo() throws Exception {
-        Resource resource = resourceLoader.getResource("classpath:messageEvent.json");
-        String json = JsonReader.read(resource);
+        String json = jsonReader.read("messageEvent.json");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

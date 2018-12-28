@@ -23,7 +23,7 @@ public class SendSlackMsgTest extends AcceptanceTest {
     private Url url;
 
     @Autowired
-    private ResourceLoader resourceLoader;
+    private JsonReader jsonReader;
 
     @Test
     public void webhookTest() {
@@ -62,8 +62,7 @@ public class SendSlackMsgTest extends AcceptanceTest {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token.getBotToken());
 
-        Resource resource = resourceLoader.getResource("classpath:responseBookInfo.json");
-        String json = JsonReader.read(resource);
+        String json = jsonReader.read("responseBookInfo.json");
 
         HttpEntity<String> request = new HttpEntity<>(json, headers);
 
