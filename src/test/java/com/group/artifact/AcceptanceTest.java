@@ -1,5 +1,6 @@
 package com.group.artifact;
 
+import com.group.artifact.helper.JsonReader;
 import org.assertj.core.api.JUnitSoftAssertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -7,6 +8,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -15,11 +20,25 @@ public class AcceptanceTest {
     @Autowired
     private TestRestTemplate template;
 
+    @Autowired
+    private JsonReader jsonReader;
+
     @Rule
     public JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
-    public TestRestTemplate template(){
+    protected TestRestTemplate template(){
         return template;
+    }
+
+    protected ResponseEntity<String> postToThisController(String jsonFile) {
+        String json = jsonReader.read(jsonFile);
+        return template.postForEntity("/api/valid", makeRequest(json), String.class);
+    }
+
+    protected HttpEntity<String> makeRequest(String json) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new HttpEntity<>(json, headers);
     }
 
     @Test

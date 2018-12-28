@@ -12,14 +12,14 @@ import java.io.InputStreamReader;
 @Component
 public class JsonReader {
     @Autowired
-    ResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
 
     public String read(String string) {
         Resource resource = resourceLoader.getResource("classpath:" + string);
         return readResource(resource);
     }
 
-    public String readResource(Resource resource) {
+    private String readResource(Resource resource) {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             String line = reader.readLine();
