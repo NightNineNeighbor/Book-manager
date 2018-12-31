@@ -1,0 +1,21 @@
+{
+  "token": "7zkvHfpUBwH8ku78ZmQMHRPe",
+  "team_id": "TD80Q6XJ9",
+  "api_app_id": "AEVEG61GA",
+  "event": {
+    "client_msg_id": "66182a01-196a-4324-8da8-ed6332576880",
+    "type": "message",
+    "text": "attp",
+    "user": "UD7QN97QS",
+    "ts": "1545197073.002600",
+    "channel": "CD7KGTJ3E",
+    "event_ts": "1545197073.002600",
+    "channel_type": "channel"
+  },
+  "type": "event_callback",
+  "event_id": "EvEYU0G0F8",
+  "event_time": 1545197073,
+  "authed_users": [
+    "UEVBEU0AG"
+  ]
+}

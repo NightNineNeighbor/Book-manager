@@ -5,18 +5,18 @@ import com.group.artifact.domain.Book;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookInfo {
+public class Attaichments {
     private String channel;
     private List<Info> attachments = new ArrayList<>();
 
-    public BookInfo(){}
+    public Attaichments(){}
 
-    public BookInfo(String channel) {
+    public Attaichments(String channel) {
         this.channel = channel;
     }
 
-    public static BookInfo of(Book book, String channel) {
-        BookInfo bookInfo = new BookInfo(channel);
+    public static Attaichments of(Book book, String channel) {
+        Attaichments bookInfo = new Attaichments(channel);
         bookInfo.add(new Info(book.getTitle(), book.getBestReview()));
         bookInfo.add(new Info("저자", book.getAuthor()));
         bookInfo.add(new Info("목차", book.getContents()));
