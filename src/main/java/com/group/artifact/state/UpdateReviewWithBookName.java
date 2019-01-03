@@ -1,19 +1,21 @@
 package com.group.artifact.state;
 
+import com.group.artifact.service.ServiceResolver;
 import com.group.artifact.service.SlackService;
+import com.group.artifact.stateStarter.Command;
 
-public class CreateReviewWithBookName implements State{
+public class UpdateReviewWithBookName implements State{
     private String bookName;
 
     @Override
-    public String doService(SlackService service, Data data) {
-        service.askReviewContents(data.getChannel());
-        this.bookName = data.getText();
+    public String doService(SlackService service, ServiceResolver serviceResolver) {
+        service.askReviewContents(serviceResolver.getChannel());
+        this.bookName = serviceResolver.getText();
         return "ASK REVIEW CONTENTS";
     }
 
     @Override
     public State nextState(boolean isBookName, Command command) {
-        return new CreateReviewExecute(bookName);
+        return new UpdateReviewExecute(bookName);
     }
 }

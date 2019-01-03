@@ -1,5 +1,8 @@
 package com.group.artifact.vo;
 
+import com.group.artifact.stateStarter.Command;
+import com.group.artifact.service.ServiceResolver;
+
 public class SlackAcceptor {
     SlackEvent event;
     private String challenge;
@@ -36,14 +39,24 @@ public class SlackAcceptor {
         return "<@" + event.getUser() + ">'s echo ~~~~" + event.getText();
     }
 
-    public boolean isBookInfoRequest() {
-        return event.isBookInfoRequest();
-    }
-
     public String getTextWithoutSpacer() {
         if (event != null) {
             return this.event.getText().replace(" ", "");
         }
         return "";
+    }
+
+    public TextAndAction extractAction() {
+        if (event == null) {
+            return TextAndAction.EMPTY;
+        }
+        return event.parseMessage();
+    }
+
+    public ServiceResolver parse() {
+        if (event == null) {
+            return new ServiceResolver(Command.NO_COMMAND, "EVENT IS NULL", "", "");
+        }
+        return event.parse();
     }
 }

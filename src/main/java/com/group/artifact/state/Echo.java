@@ -1,4 +1,19 @@
 package com.group.artifact.state;
 
-public class Echo {
+import com.group.artifact.service.ServiceResolver;
+import com.group.artifact.service.SlackService;
+import com.group.artifact.stateStarter.Command;
+
+public class Echo implements State {
+
+    @Override
+    public String doService(SlackService service, ServiceResolver serviceResolver) {
+        service.echo(serviceResolver.getSlackId(), serviceResolver.getText(), serviceResolver.getChannel());
+        return "ECHO";
+    }
+
+    @Override
+    public State nextState(boolean isBookName, Command command) {
+        return command.initState(isBookName);
+    }
 }

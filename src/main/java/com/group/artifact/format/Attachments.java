@@ -1,26 +1,35 @@
 package com.group.artifact.format;
 
 import com.group.artifact.domain.Book;
+import com.group.artifact.domain.Review;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Attaichments {
+public class Attachments {
     private String channel;
     private List<Info> attachments = new ArrayList<>();
 
-    public Attaichments(){}
+    public Attachments(){}
 
-    public Attaichments(String channel) {
+    public Attachments(String channel) {
         this.channel = channel;
     }
 
-    public static Attaichments of(Book book, String channel) {
-        Attaichments bookInfo = new Attaichments(channel);
+    public static Attachments ofBookInfo(Book book, String channel) {
+        Attachments bookInfo = new Attachments(channel);
         bookInfo.add(new Info(book.getTitle(), book.getBestReview()));
         bookInfo.add(new Info("저자", book.getAuthor()));
         bookInfo.add(new Info("목차", book.getContents()));
         return bookInfo;
+    }
+
+    public static Attachments ofReview(List<Review> reviews, String channel) {
+        Attachments reviewInfo = new Attachments(channel);
+        for (Review review : reviews) {
+            reviewInfo.add(new Info(review.getWrappedId(), review.getReview()));
+        }
+        return reviewInfo;
     }
 
     public String getChannel() {

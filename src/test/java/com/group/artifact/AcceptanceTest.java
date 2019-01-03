@@ -17,22 +17,33 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AcceptanceTest {
+    @Rule
+    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
     @Autowired
     private TestRestTemplate template;
-
     @Autowired
     private JsonReader jsonReader;
 
-    @Rule
-    public JUnitSoftAssertions softly = new JUnitSoftAssertions();
-
-    protected TestRestTemplate template(){
+    protected TestRestTemplate template() {
         return template;
     }
 
     protected ResponseEntity<String> postToThisController(String jsonFile) {
         String json = jsonReader.read(jsonFile);
         return template.postForEntity("/api/valid", makeRequest(json), String.class);
+    }
+
+    protected ResponseEntity<String> postMessage(String message) {
+        java.lang.String json = jsonReader.read("format.json")
+                .replace("{{message}}", message);
+        return template.postForEntity("/api/valid", makeRequest(json), java.lang.String.class);
+    }
+
+    protected ResponseEntity<String> postMessage(String message, String slackId) {
+        java.lang.String json = jsonReader.read("format2.json")
+                .replace("{{message}}", message)
+                .replace("{{user}}", slackId);
+        return template.postForEntity("/api/valid", makeRequest(json), java.lang.String.class);
     }
 
     protected HttpEntity<String> makeRequest(String json) {
@@ -42,5 +53,6 @@ public class AcceptanceTest {
     }
 
     @Test
-    public void test(){}
+    public void test() {
+    }
 }

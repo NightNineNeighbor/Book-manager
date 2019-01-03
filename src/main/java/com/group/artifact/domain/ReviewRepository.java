@@ -1,4 +1,7 @@
 package com.group.artifact.domain;
 
-public class ReviewRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ReviewRepository extends JpaRepository<Review, Long> {
+
 }
