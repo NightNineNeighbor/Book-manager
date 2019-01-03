@@ -16,6 +16,14 @@ public class MessageSenderTest extends AcceptanceTest {
     MessageSender sender;
 
     @Test
+    public void review(){
+        ResponseEntity<String> response = sender.review(Fixture.book.getReviews(), Fixture.channel);
+
+        log.info("response : {}", response.toString());
+        softly.assertThat(response.getBody()).contains("\"ok\":true");
+    }
+
+    @Test
     public void echo() {
         ResponseEntity<String> response = sender.echo(Fixture.echo);
 

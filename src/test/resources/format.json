@@ -5,7 +5,7 @@
   "event": {
     "client_msg_id": "66182a01-196a-4324-8da8-ed6332576880",
     "type": "message",
-    "text": "성공하는 프로그래밍 공부법",
+    "text": "{{message}}",
     "user": "UD7QN97QS",
     "ts": "1545197073.002600",
     "channel": "CD7KGTJ3E",
