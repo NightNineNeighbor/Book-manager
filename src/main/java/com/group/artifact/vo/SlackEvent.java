@@ -54,27 +54,6 @@ public class SlackEvent {
         return this.type.equals("message") && subtype == null;
     }
 
-    TextAndAction parseMessage() {
-        if (this.text.contains("리뷰")) {
-            String bookName = this.text.replace("리뷰", "");
-            if (bookName.contains("등록")) {
-                bookName = bookName.replace("등록", "");
-                TextAndAction.save(this.user, Action.ReviewCreate);
-            }
-            else if (bookName.contains("삭제")) {
-                bookName = bookName.replace("삭제", "");
-                TextAndAction.save(this.user, Action.ReviewDelete);
-            } else if (bookName.contains("수정")) {
-                bookName = bookName.replace("수정", "");
-                TextAndAction.save(this.user, Action.ReviewUpdate);
-            } else {
-                TextAndAction.save(this.user, Action.ReviewRead);
-            }
-            return new TextAndAction(this.user, bookName);
-        }
-        return new TextAndAction(this.user, this.text);
-    }
-
     public ServiceResolver parse() {
         if (this.text.contains("리뷰")) {
             String pureText = this.text.replace("리뷰", "");

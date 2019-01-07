@@ -46,12 +46,6 @@ public class SlackAcceptor {
         return "";
     }
 
-    public TextAndAction extractAction() {
-        if (event == null) {
-            return TextAndAction.EMPTY;
-        }
-        return event.parseMessage();
-    }
 
     public ServiceResolver parse() {
         if (event == null) {
