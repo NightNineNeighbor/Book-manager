@@ -49,7 +49,7 @@ public class SlackAcceptor {
 
     public ServiceResolver parse() {
         if (event == null) {
-            return new ServiceResolver(Command.NO_COMMAND, "EVENT IS NULL", "", "");
+            return new ServiceResolver(Command.DO_NOTHING, "EVENT IS NULL", "", "");
         }
         return event.parse();
     }

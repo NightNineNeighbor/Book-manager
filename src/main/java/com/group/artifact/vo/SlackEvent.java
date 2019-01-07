@@ -55,6 +55,10 @@ public class SlackEvent {
     }
 
     public ServiceResolver parse() {
+        if (this.subtype != null && this.subtype.equals("bot_message")) {
+            return new ServiceResolver(Command.NO_COMMAND, null, null, null);
+        }
+
         if (this.text.contains("리뷰")) {
             String pureText = this.text.replace("리뷰", "");
             Command command;

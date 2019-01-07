@@ -7,7 +7,9 @@ public enum Command {
     REVIEW_CREATE(CreateReviewWithBookName::new, CreateReviewWithoutBookName::new),
     REVIEW_UPDATE(UpdateReviewWithBookName::new, UpdateReviewWithoutBookName::new),
     REVIEW_DELETE(DeleteReviewWithBookName::new, DeleteReviewWithoutBookName::new),
-    NO_COMMAND(BookInfo::new,Echo::new);
+    NO_COMMAND(BookInfo::new,Echo::new),
+    DO_NOTHING(DoNothing::new,DoNothing::new);
+
 
     private Supplier<State> isBookName;
     private Supplier<State> noBookName;
