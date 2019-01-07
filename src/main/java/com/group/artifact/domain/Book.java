@@ -1,6 +1,6 @@
 package com.group.artifact.domain;
 
-import org.hibernate.annotations.Fetch;
+import com.group.artifact.vo.CrawledBook;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 public class Book {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Size(min = 1)
     private String title;
@@ -18,17 +19,26 @@ public class Book {
     private String contents;
     @NotNull
     private String author;
-    @OneToMany(fetch=FetchType.EAGER, mappedBy = "book")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
     private List<Review> reviews = new ArrayList<>();
+    private String image;
 
-    public Book(){};
+    public Book() {
+    }
 
-    public Book(long id, @Size(min = 1) String title, String contents, @NotNull String author, List<Review> reviews) {
+    ;
+
+    public Book(long id, @Size(min = 1) String title, String contents, @NotNull String author, List<Review> reviews, String image) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.author = author;
         this.reviews = reviews;
+        this.image = image;
+    }
+
+    public static Book of(CrawledBook crawledBook, String contents) {
+        return new Book(0, crawledBook.getTitle(), contents, crawledBook.getAuthor(), new ArrayList<>(), crawledBook.getImage());
     }
 
     public long getId() {
@@ -72,6 +82,14 @@ public class Book {
         this.author = author;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public String getBestReview() {
         if (reviews.size() == 0) {
             return "등록된 리뷰가 없습니다";
@@ -81,7 +99,7 @@ public class Book {
 
     public void deleteByUser(String user) {
         for (int i = 0; i < reviews.size(); i++) {
-            if(reviews.get(i).isSameUser(user)){
+            if (reviews.get(i).isSameUser(user)) {
                 reviews.remove(i);
                 break;
             }

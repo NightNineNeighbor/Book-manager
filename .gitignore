@@ -26,3 +26,5 @@
 /.nb-gradle/
 
 src/main/resources/BotToken
+src/main/resources/NaverClientId
+src/main/resources/NaverClientSecret

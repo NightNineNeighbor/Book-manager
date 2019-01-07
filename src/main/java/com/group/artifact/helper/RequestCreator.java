@@ -20,6 +20,13 @@ public class RequestCreator {
     @Autowired
     private Token token;
 
+    public HttpEntity<Void> crawlingHeader(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Naver-Client-Id", "vajWHFNqfloEuhxste1B");
+        headers.add("X-Naver-Client-Secret", "WW4Y6t1HSN");
+        return new HttpEntity<>(headers);
+    }
+
     public HttpEntity<Map<String, String>> echo(SlackAcceptor acceptor) {
         return simpleText(acceptor.getEchoText(), acceptor.getChannel());
     }
