@@ -24,6 +24,10 @@ public class Review {
         this.writer = writer;
     }
 
+    public static Review of(String review, Book book) {
+        return new Review(0, review, book, null);//todo : add default user
+    }
+
     public long getId() {
         return id;
     }

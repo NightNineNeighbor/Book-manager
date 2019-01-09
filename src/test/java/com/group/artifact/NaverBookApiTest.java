@@ -1,6 +1,7 @@
 package com.group.artifact;
 
 import com.group.artifact.vo.NaverAcceptor;
+import com.group.artifact.vo.Token;
 import com.group.artifact.vo.Url;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -16,17 +17,19 @@ public class NaverBookApiTest extends AcceptanceTest {
     @Autowired
     private Url url;
 
+    @Autowired
+    private Token token;
 
     @Test
     public void naverApi() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Naver-Client-Id", "vajWHFNqfloEuhxste1B");
-        headers.add("X-Naver-Client-Secret", "WW4Y6t1HSN");
+        headers.add("X-Naver-Client-Id", token.getNaverClientId());
+        headers.add("X-Naver-Client-Secret", token.getNaverClientSecret());
 
         HttpEntity<Void> request = new HttpEntity<Void>(headers);
 
         ResponseEntity<NaverAcceptor> response = template().exchange(
-                "https://openapi.naver.com/v1/search/book.json?display=1&sort=sim&query=성공하는 프로그래밍",
+                url.getNaverApi("성공하는 프로그래밍 공부법"),
                 HttpMethod.GET,
                 request,
                 NaverAcceptor.class);

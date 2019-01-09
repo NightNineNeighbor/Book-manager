@@ -19,7 +19,7 @@ public class Book {
     private String contents;
     @NotNull
     private String author;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")//todo
     private List<Review> reviews = new ArrayList<>();
     private String image;
 
