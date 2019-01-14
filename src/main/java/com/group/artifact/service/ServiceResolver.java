@@ -1,10 +1,12 @@
 package com.group.artifact.service;
 
+import com.group.artifact.domain.Book;
 import com.group.artifact.state.ChatBotState;
 import com.group.artifact.stateStarter.Command;
 import com.group.artifact.state.State;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ServiceResolver {
@@ -24,7 +26,8 @@ public class ServiceResolver {
 
     public String doSomething(SlackService service) {
         boolean isBookName = service.isBookName(text);
-        State currentState = ChatBotState.currentState(slackId, command, isBookName);
+        List<Book> books = service.search(text);
+        State currentState = ChatBotState.currentState(slackId, command, books);
         return currentState.doService(service, this);
 
 //        if (beforeState.containsKey(slackId)) {

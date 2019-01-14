@@ -123,4 +123,12 @@ public class SlackService {
     }
 
 
+    public ResponseEntity<String>  selectBook(String channel, List<Book> books) {
+
+       return messageSender.sendBooks(channel, books);
+    }
+
+    public void error(String s) { //todo
+
+    }
 }

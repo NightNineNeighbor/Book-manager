@@ -59,17 +59,17 @@ public class SlackEvent {
             return new ServiceResolver(Command.NO_COMMAND, null, null, null);
         }
 
-        if (this.text.contains("리뷰")) {
-            String pureText = this.text.replace("리뷰", "");
+        if (this.text.contains("!리뷰")) {
+            String pureText = this.text.replace("!리뷰", "");
             Command command;
-            if (this.text.contains("등록")) {
-                pureText = pureText.replace("등록", "");
+            if (this.text.contains("!등록")) {
+                pureText = pureText.replace("!등록", "");
                 command = Command.REVIEW_CREATE;
-            }else if(this.text.contains("삭제")){
-                pureText = pureText.replace("삭제", "");
+            }else if(this.text.contains("!삭제")){
+                pureText = pureText.replace("!삭제", "");
                 command = Command.REVIEW_DELETE;
-            }else if (this.text.contains("수정")){
-                pureText = pureText.replace("수정", "");
+            }else if (this.text.contains("!수정")){
+                pureText = pureText.replace("!수정", "");
                 command = Command.REVIEW_UPDATE;
             }else{
                 command = Command.REVIEW_READ;
