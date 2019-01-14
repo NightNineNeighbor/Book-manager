@@ -128,4 +128,20 @@ public class Book {
         reviews.add(review);
         return review;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                ", author='" + author + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
+
+    public boolean containInTitle(String s) {
+        return this.title.contains(s);
+    }
+
 }

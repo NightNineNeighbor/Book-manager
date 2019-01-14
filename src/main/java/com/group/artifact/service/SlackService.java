@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service("slackService")
@@ -88,4 +90,37 @@ public class SlackService {
         User user = createUser(slackId);
         return reviewRepository.save(new Review(0, text, book, user));
     }
+
+    public List<Book> search(String query) {
+        List<String> queries = Arrays.asList(query.split(" "));
+        if (queries.size() == 0) {
+            throw new RuntimeException("Empty query");    //todo
+        }
+        List<Book> books = bookRepository.findByTitleLike("%"+queries.get(0)+"%");
+        for (int i = 1; i < queries.size(); i++) {
+            if (books.size() == 1) {
+                return books;
+            }else if (books.size() == 0) {
+                books = bookRepository.findByTitleLike("%"+queries.get(i)+"%");
+            }else {
+                books = search(books, queries.get(i));
+            }
+        }
+        return books;
+    }
+
+    private List<Book> search(List<Book> books, String s) {
+        List<Book> ret = new ArrayList<>();
+        for (Book book : books) {
+            if (book.containInTitle(s)) {
+                ret.add(book);
+            }
+        }
+        if (ret.size() == 0) {
+            return books;
+        }
+        return ret;
+    }
+
+
 }

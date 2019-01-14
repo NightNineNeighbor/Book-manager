@@ -11,8 +11,10 @@ import java.net.URLEncoder;
 public class Url {
     @Value("${webhook}")
     private String webhook;
+
     @Value("${postMessage}")
     private String postMessage;
+
     @Value("${naverApi}")
     private String naverApi;
 
@@ -21,6 +23,7 @@ public class Url {
 
     @Value("${aladinAjax}")
     private String aladinAjax;
+
     public Url() {
     }
 
