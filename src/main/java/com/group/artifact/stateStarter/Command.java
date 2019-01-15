@@ -10,7 +10,7 @@ public enum Command {
     STATE_ZERO(null),
     REVIEW_READ(ReviewCreate::new),
     REVIEW_CREATE(ReviewCreate::new),
-    REVIEW_UPDATE(null),
+    REVIEW_UPDATE(ReviewCreate::new),
     REVIEW_DELETE(ReviewDelete::new),
     NO_COMMAND(null),
     DO_NOTHING(null);

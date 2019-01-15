@@ -123,17 +123,29 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         softly.assertThat(before - after).isEqualTo(1);
     }
 
-    //    @Test
+    @Test
     public void updateReviewDirect() {
-        ResponseEntity<String> response = postMessage("성공하는 프로그래밍 공부법 리뷰 수정");
-        softly.assertThat(response.getBody()).contains("ASK REVIEW CONTENTS");
+        Review review = new Review("원래 존재하는 리뷰", null, null);
+        review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
+        review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review);
 
-        ResponseEntity<String> response1 = postMessage("새로운 내용");
-        softly.assertThat(response1.getBody()).contains("DO REVIEW UPDATE OR CREATE");
+        int before = (int) reviewRepository.count();
 
-        Book book = bookRepository.findByTitle("성공하는프로그래밍공부법").get();
-        Review review = book.getReviewsBySlackId(Fixture.nnn.getSlackId());
-        softly.assertThat(review.getReview()).isEqualTo("새로운 내용");
+        ResponseEntity<String> response = postMessage("첫 번째 책 !리뷰 !수정",Fixture.mmm.getSlackId());
+        softly.assertThat(response.getBody()).contains("ASK CONTENTS");
+
+        ResponseEntity<String> response1 = postMessage("새로운 내용",Fixture.mmm.getSlackId());
+        softly.assertThat(response1.getBody()).contains("CREATE REVIEW");
+
+        int after = (int) reviewRepository.count();
+        Review originReview = reviewRepository.findByReview("원래 존재하는 리뷰");
+        Review updatedReview = reviewRepository.findByReview("새로운 내용");
+
+        softly.assertThat(updatedReview).isNotNull();
+        softly.assertThat(originReview).isNull();
+        softly.assertThat(before - after).isEqualTo(0);
+
     }
 
     //    @Test
