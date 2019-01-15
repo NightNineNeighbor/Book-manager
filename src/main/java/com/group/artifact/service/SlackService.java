@@ -56,15 +56,6 @@ public class SlackService {
         return messageSender.send("리뷰 내용을 입력해 주세요", channel);
     }
 
-    public Review updateReview(String bookName, String text, String slackId) {
-        Book book = bookRepository.findByTitle(bookName.replace(" ", "")).orElseThrow(RuntimeException::new);//todo
-        User user = userRepository.findBySlackId(slackId).orElseThrow(RuntimeException::new);//todo
-        book.update(user,text);
-        Review review = book.getReviewsBySlackId(slackId);
-        return reviewRepository.save(review);
-    }
-
-
     public Review deleteReview(String bookName, String slackId, String channel) {
         Book book = bookRepository.findByTitle(bookName).orElseThrow(()->new RuntimeException("틀린 책 이름"));
         User user = userRepository.findBySlackId(slackId).orElseThrow(() -> new RuntimeException("틀린 슬랙 ID"));
@@ -81,7 +72,7 @@ public class SlackService {
         return messageSender.send("<@" + slackId + ">'s echo : " + text, channel);
     }
 
-    public Review createReview(String bookName, String text, String slackId, String channel) {
+    public Review updateOrCreateReview(String bookName, String text, String slackId, String channel) {
         Book book = bookRepository.findByTitle(bookName).orElseThrow(RuntimeException::new);
         Optional<User> maybeUser = userRepository.findBySlackId(slackId);
         if (!maybeUser.isPresent()) {

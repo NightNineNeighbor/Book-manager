@@ -145,24 +145,9 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         softly.assertThat(updatedReview).isNotNull();
         softly.assertThat(originReview).isNull();
         softly.assertThat(before - after).isEqualTo(0);
-
     }
 
-    //    @Test
-    public void updateReview() {
-        ResponseEntity<String> response = postMessage("리뷰 수정");
-        softly.assertThat(response.getBody()).contains("ASK BOOK NAME");
 
-        ResponseEntity<String> response1 = postMessage("성공하는 프로그래밍 공부법");
-        softly.assertThat(response1.getBody()).contains("ASK REVIEW CONTENTS");
-
-        ResponseEntity<String> response2 = postMessage("새로운 내용입니다.");
-        softly.assertThat(response2.getBody()).contains("DO REVIEW UPDATE OR CREATE");
-
-        Book book = bookRepository.findByTitle("성공하는프로그래밍공부법").get();
-        Review review = book.getReviewsBySlackId(Fixture.nnn.getSlackId());
-        softly.assertThat(review.getReview()).isEqualTo("새로운 내용입니다.");
-    }
 
     //    @Test
     public void showReviewDirect() {

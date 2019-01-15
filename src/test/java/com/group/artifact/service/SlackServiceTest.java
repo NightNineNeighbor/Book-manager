@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public class SlackServiceTest extends AcceptanceTest {
     private static final Logger log = LoggerFactory.getLogger(SlackServiceTest.class);
@@ -26,11 +25,6 @@ public class SlackServiceTest extends AcceptanceTest {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Before
-    public void setup(){
-
-    }
 
     @Test
     public void deleteReview(){bookRepository.save(Fixture.book);
@@ -49,7 +43,7 @@ public class SlackServiceTest extends AcceptanceTest {
 
     @Test
     public void createReview(){
-        slackService.createReview("성공하는프로그래밍공부법", "새로운 내용", Fixture.mmm.getSlackId(),Fixture.channel);
+        slackService.updateOrCreateReview("성공하는프로그래밍공부법", "새로운 내용", Fixture.mmm.getSlackId(),Fixture.channel);
 
         System.out.println(reviewRepository.findByReview("새로운 내용"));
         softly.assertThat(reviewRepository.findByReview("새로운 내용").getReview()).isEqualTo("새로운 내용");
