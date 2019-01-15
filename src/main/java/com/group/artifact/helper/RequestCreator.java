@@ -40,7 +40,11 @@ public class RequestCreator {
     }
 
     public HttpEntity<Attachments> review(List<Review> reviews, String channel) {
-        return new HttpEntity<>(Attachments.ofReview(reviews, channel),
+        Attachments attachments = new Attachments(channel);
+        for (Review review : reviews) {
+            attachments.add(new Info("", review.getReview()));
+        }
+        return new HttpEntity<>(attachments,
                 getJsonHeaders());
     }
 

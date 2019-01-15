@@ -3,11 +3,9 @@ package com.group.artifact.service;
 import com.group.artifact.domain.*;
 import com.group.artifact.sender.MessageSender;
 import com.group.artifact.vo.SlackAcceptor;
-import org.omg.SendingContext.RunTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -41,11 +39,6 @@ public class SlackService {
 
     public boolean isBookName(String bookName) {
         return bookRepository.findByTitle(bookName.replace(" ","" )).isPresent();
-    }
-
-    public ResponseEntity<String> sendReview(String bookName, String channel) {
-        Book book = bookRepository.findByTitle(bookName.replace(" ", "")).get();
-        return messageSender.review(book.getReviews(), channel);
     }
 
     public ResponseEntity<String> askBookName(String channel) {
@@ -135,5 +128,12 @@ public class SlackService {
 
     public void error(String s) { //todo
 
+    }
+
+    @Transactional
+    public ResponseEntity<String> readReview(String bookName, String channel) {
+        Book book = bookRepository.findByTitle(bookName).orElseThrow(() -> new RuntimeException("잘못된 책 이름입니다."));
+        List<Review> reviews = book.getReviews();
+        return messageSender.review(reviews, channel);
     }
 }

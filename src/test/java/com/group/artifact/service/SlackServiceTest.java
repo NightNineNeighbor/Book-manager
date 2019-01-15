@@ -27,6 +27,25 @@ public class SlackServiceTest extends AcceptanceTest {
     private UserRepository userRepository;
 
     @Test
+    public void readReviews(){
+        bookRepository.save(Fixture.book);
+        userRepository.save(Fixture.mmm);
+        Review review = new Review("mmm의 리뷰", null, null);
+        review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
+        review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review);
+
+        userRepository.save(Fixture.nnn);
+        Review review1 = new Review("nnn의 리뷰", null, null);
+        review1.setWriter(userRepository.findBySlackId(Fixture.nnn.getSlackId()).get());
+        review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review1);
+
+        ResponseEntity<String> response = slackService.readReview(Fixture.book.getTitle(), Fixture.channel);
+        softly.assertThat(response.getBody()).contains("\"ok\":true");
+    }
+
+    @Test
     public void deleteReview(){bookRepository.save(Fixture.book);
         userRepository.save(Fixture.nnn);
         Review review = new Review("새 리뷰", null, null);
