@@ -28,6 +28,7 @@ public class ReviewRead implements State, NeedBookName{
     @Override
     public String serviceWithBookName(SlackService service, ServiceResolver serviceResolver, String bookName) {
         service.readReview(bookName, serviceResolver.getChannel());
+        ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
         return "READ REVIEW";
     }
 }

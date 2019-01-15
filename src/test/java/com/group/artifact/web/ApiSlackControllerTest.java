@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
+
 public class ApiSlackControllerTest extends AcceptanceTest {
     private static final Logger log = LoggerFactory.getLogger(ApiSlackControllerTest.class);
     @Autowired
@@ -150,14 +151,11 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
     @Test
     public void readReviewDirect() {
-        bookRepository.save(Fixture.book);
-        userRepository.save(Fixture.mmm);
         Review review = new Review("mmm의 리뷰", null, null);
         review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
         review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review);
 
-        userRepository.save(Fixture.nnn);
         Review review1 = new Review("nnn의 리뷰", null, null);
         review1.setWriter(userRepository.findBySlackId(Fixture.nnn.getSlackId()).get());
         review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
@@ -169,14 +167,11 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
     @Test
     public void readReviewManyBooks(){
-        bookRepository.save(Fixture.book);
-        userRepository.save(Fixture.mmm);
         Review review = new Review("mmm의 리뷰", null, null);
         review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
         review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review);
 
-        userRepository.save(Fixture.nnn);
         Review review1 = new Review("nnn의 리뷰", null, null);
         review1.setWriter(userRepository.findBySlackId(Fixture.nnn.getSlackId()).get());
         review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
@@ -191,14 +186,11 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
     @Test
     public void reviewBook(){
-        bookRepository.save(Fixture.book);
-        userRepository.save(Fixture.mmm);
         Review review = new Review("mmm의 리뷰", null, null);
         review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
         review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review);
 
-        userRepository.save(Fixture.nnn);
         Review review1 = new Review("nnn의 리뷰", null, null);
         review1.setWriter(userRepository.findBySlackId(Fixture.nnn.getSlackId()).get());
         review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
@@ -211,21 +203,25 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         softly.assertThat(response1.getBody()).contains("READ REVIEW");
     }
 
-    //    @Test
-    public void matchBookName() {
-        ResponseEntity<String> response = postMessage("성공하는 프로그래밍 공부법");
-        log.info("response : {}", response.toString());
-        softly.assertThat(response.getBody()).contains("SEND BOOK INFO");
+    @Test
+    public void bookInfoDirect() {
+        Review review = new Review("mmm의 리뷰", null, null);
+        review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
+        review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review);
+
+        Review review1 = new Review("nnn의 리뷰", null, null);
+        review1.setWriter(userRepository.findBySlackId(Fixture.nnn.getSlackId()).get());
+        review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review1);
+
+
+        ResponseEntity<String> response = postMessage("첫 번째 책 !정보");
+        softly.assertThat(response.getBody()).contains("BOOK INFO");
     }
 
-    //    @Test
-    public void echo() throws Exception {
-        ResponseEntity<String> response = postMessage("에코 에코 에코");
-        log.info("response : {}", response.toString());
-        softly.assertThat(response.getBody()).isEqualTo("ECHO");
-    }
 
-    //    @Test
+        @Test
     public void eventSubscription() {
         String challengeToken = "3eZbrw1aBm2rZgRNFdxV2595E9CY3gmdALWMmHkvFXO7tYXAYM8P";
         String json = "{\"token\": \"Jhj5dZrVaK7ZwHHjRyZWjbDl\",\"challenge\": \"" + challengeToken + "\",\"type\": \"url_verification\"}";

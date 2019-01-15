@@ -59,6 +59,13 @@ public class SlackEvent {
             return new ServiceResolver(Command.NO_COMMAND, null, null, null);
         }
 
+        if (this.text.contains("!정보")) {
+            return new ServiceResolver(Command.BOOK_INFO,
+                    this.text.replace("!정보", ""),
+                    this.user,
+                    this.channel);
+        }
+
         if (this.text.contains("!리뷰")) {
             String pureText = this.text.replace("!리뷰", "");
             Command command;

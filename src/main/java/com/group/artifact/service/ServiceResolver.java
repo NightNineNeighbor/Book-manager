@@ -25,7 +25,6 @@ public class ServiceResolver {
     }
 
     public String doSomething(SlackService service) {
-        boolean isBookName = service.isBookName(text);
         List<Book> books = service.search(text);
         State currentState = ChatBotState.currentState(slackId, command, books);
         return currentState.doService(service, this);

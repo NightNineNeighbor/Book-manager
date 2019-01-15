@@ -28,17 +28,10 @@ public class SlackService {
         return messageSender.echo(acceptor);
     }
 
+    @Transactional
     public ResponseEntity<String> sendBookInfo(String bookName, String channel) {
-        Book book = bookRepository.findByTitle(bookName.replace(" ", "")).get();
+        Book book = bookRepository.findByTitle(bookName).orElseThrow(()->new RuntimeException("잘못된 책 이름입니다."));
         return messageSender.bookInfo(book, channel);
-    }
-
-    public boolean isBookName(SlackAcceptor acceptor) {
-        return bookRepository.findByTitle(acceptor.getTextWithoutSpacer()).isPresent();
-    }
-
-    public boolean isBookName(String bookName) {
-        return bookRepository.findByTitle(bookName.replace(" ","" )).isPresent();
     }
 
     public ResponseEntity<String> askBookName(String channel) {
@@ -59,10 +52,6 @@ public class SlackService {
         messageSender.sendReview(channel, review);
 
         return review;
-    }
-
-    public ResponseEntity<String> echo(String slackId, String text, String channel) {
-        return messageSender.send("<@" + slackId + ">'s echo : " + text, channel);
     }
 
     public Review updateOrCreateReview(String bookName, String text, String slackId, String channel) {
@@ -94,7 +83,6 @@ public class SlackService {
         if (queries.size() == 0 || queries.get(0).equals("")) {
             return new ArrayList<>();
         }
-        List<Book> debug = bookRepository.findAll(); //debug
         List<Book> books = bookRepository.findByTitleLike("%"+queries.get(0)+"%");
         for (int i = 1; i < queries.size(); i++) {
             if (books.size() == 1) {
