@@ -6,7 +6,7 @@ import com.group.artifact.service.SlackService;
 
 import java.util.List;
 
-public class ReviewDelete implements State, NeedBook {
+public class ReviewDelete implements State, NeedBookName {
     @Override
     public String doService(SlackService service, ServiceResolver serviceResolver) {
         List<Book> books = service.search(serviceResolver.getText());
@@ -20,7 +20,7 @@ public class ReviewDelete implements State, NeedBook {
             return "DELETE REVIEW";
         } else {
             service.selectBook(serviceResolver.getChannel(), books);
-            ChatBotState.put(serviceResolver.getSlackId(), new ManyBooks(books, this));
+            ChatBotState.put(serviceResolver.getSlackId(), new ProxyWithManyBookNames(books, this));
             return "MANY BOOK";
         }
     }

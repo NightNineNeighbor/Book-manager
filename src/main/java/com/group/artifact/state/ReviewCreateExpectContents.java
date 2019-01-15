@@ -5,7 +5,7 @@ import com.group.artifact.service.SlackService;
 import com.group.artifact.stateStarter.Command;
 
 
-public class ReviewCreateExpectContents implements State, NeedBook {
+public class ReviewCreateExpectContents implements State, NeedBookName {
     private String bookName;
 
     ReviewCreateExpectContents(String bookName) {

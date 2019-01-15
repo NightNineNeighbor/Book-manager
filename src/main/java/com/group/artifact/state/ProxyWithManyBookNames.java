@@ -6,17 +6,13 @@ import com.group.artifact.service.SlackService;
 
 import java.util.List;
 
-public class ManyBooks implements State {
+public class ProxyWithManyBookNames implements State {
     private List<Book> books;
-    private NeedBook needBook;
+    private NeedBookName needBookName;
 
-    public ManyBooks(List<Book> books) {
+    public ProxyWithManyBookNames(List<Book> books, NeedBookName needBookName) {
         this.books = books;
-    }
-
-    public ManyBooks(List<Book> books, NeedBook needBook) {
-        this.books = books;
-        this.needBook = needBook;
+        this.needBookName = needBookName;
     }
 
     @Override
@@ -35,6 +31,6 @@ public class ManyBooks implements State {
             return "WRONG INPUT";
         }
 
-        return needBook.serviceWithBookName(service, serviceResolver, books.get(index-1).getTitle());
+        return needBookName.serviceWithBookName(service, serviceResolver, books.get(index-1).getTitle());
     }
 }
