@@ -1,6 +1,7 @@
 package com.group.artifact.stateStarter;
 
 import com.group.artifact.state.ReviewCreate;
+import com.group.artifact.state.ReviewDelete;
 import com.group.artifact.state.State;
 
 import java.util.function.Supplier;
@@ -10,7 +11,7 @@ public enum Command {
     REVIEW_READ(ReviewCreate::new),
     REVIEW_CREATE(ReviewCreate::new),
     REVIEW_UPDATE(null),
-    REVIEW_DELETE(null),
+    REVIEW_DELETE(ReviewDelete::new),
     NO_COMMAND(null),
     DO_NOTHING(null);
 

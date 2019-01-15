@@ -3,6 +3,7 @@ package com.group.artifact.helper;
 import com.group.artifact.domain.Book;
 import com.group.artifact.domain.Review;
 import com.group.artifact.format.Attachments;
+import com.group.artifact.format.Info;
 import com.group.artifact.vo.SlackAcceptor;
 import com.group.artifact.vo.Token;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,13 @@ public class RequestCreator {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + token.getBotToken());
         return headers;
+    }
+
+    public HttpEntity<Attachments> sendOneReview(Review review, String channel) {
+        Attachments attachments = new Attachments(channel);
+        attachments.add(new Info("책 이름", review.getBook().getTitle()));
+        attachments.add(new Info("리뷰", review.getReview()));
+        return new HttpEntity<>(attachments,
+                getJsonHeaders());
     }
 }

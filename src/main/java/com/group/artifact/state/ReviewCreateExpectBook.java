@@ -18,9 +18,9 @@ public class ReviewCreateExpectBook implements State {
                 service.askBookName(serviceResolver.getChannel());
                 return "ASK BOOK NAME";
             } else if (books.size() == 1) {
-                service.createReview(books.get(0).getTitle(), serviceResolver.getText(), serviceResolver.getSlackId());
-                ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
-                return "CREATE REVIEW";
+                service.askReviewContents(serviceResolver.getChannel());
+                ChatBotState.put(serviceResolver.getSlackId(), new ReviewCreateExpectContents(books.get(0).getTitle()));
+                return "ASK REVIEW CONTENTS";
             } else {
                 service.selectBook(serviceResolver.getChannel(), books);
                 ChatBotState.put(serviceResolver.getSlackId(), new ManyBooks(books, new ReviewCreateExpectContents()));

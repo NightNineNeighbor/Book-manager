@@ -4,7 +4,7 @@ import com.group.artifact.service.ServiceResolver;
 import com.group.artifact.service.SlackService;
 
 public interface NeedBook extends State {
-    void beforeService(SlackService service, ServiceResolver serviceResolver);
+    String beforeService(SlackService service, ServiceResolver serviceResolver, String bookName);
 
-    State setBookName(String bookName);
+    State nextState();
 }

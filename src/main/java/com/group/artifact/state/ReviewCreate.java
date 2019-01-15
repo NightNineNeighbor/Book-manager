@@ -20,7 +20,7 @@ public class ReviewCreate implements State {
             return "ASK BOOK NAME";
         } else {
             service.selectBook(serviceResolver.getChannel(), books);
-            ChatBotState.put(serviceResolver.getSlackId(),new ManyBooks(books));
+            ChatBotState.put(serviceResolver.getSlackId(),new ManyBooks(books, new ReviewCreateExpectContents()));
             return "MANY BOOK";
         }
     }

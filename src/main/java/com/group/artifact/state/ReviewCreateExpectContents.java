@@ -17,7 +17,7 @@ public class ReviewCreateExpectContents implements State, NeedBook {
     @Override
     public String doService(SlackService service, ServiceResolver serviceResolver) {
         if (serviceResolver.getCommand() == Command.NO_COMMAND) {
-            service.createReview(bookName, serviceResolver.getChannel(), serviceResolver.getSlackId());
+            service.createReview(bookName, serviceResolver.getText(), serviceResolver.getSlackId(),serviceResolver.getChannel());
             ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
             return "CREATE REVIEW";
         }
@@ -25,13 +25,14 @@ public class ReviewCreateExpectContents implements State, NeedBook {
     }
 
     @Override
-    public void beforeService(SlackService service, ServiceResolver serviceResolver) {
+    public String beforeService(SlackService service, ServiceResolver serviceResolver, String bookName) {
+        this.bookName = bookName;
         service.askReviewContents(serviceResolver.getChannel());
+        return "SAVE BOOK NAME";
     }
 
     @Override
-    public State setBookName(String bookName) {
-        this.bookName = bookName;
+    public State nextState() {
         return this;
     }
 }

@@ -19,14 +19,12 @@ public class Book {
     private String contents;
     @NotNull
     private String author;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")//todo
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)//todo
     private List<Review> reviews = new ArrayList<>();
     private String image;
 
     public Book() {
     }
-
-    ;
 
     public Book(long id, @Size(min = 1) String title, String contents, @NotNull String author, List<Review> reviews, String image) {
         this.id = id;

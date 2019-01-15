@@ -14,4 +14,6 @@ public class BookRepositoryTest extends AcceptanceTest {
         List<Book> books = bookRepository.findByTitleLike("%성공%");
         System.out.println(books);
     }
+
+
 }

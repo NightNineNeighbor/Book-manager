@@ -3,15 +3,14 @@ package com.group.artifact.service;
 import com.group.artifact.domain.*;
 import com.group.artifact.sender.MessageSender;
 import com.group.artifact.vo.SlackAcceptor;
+import org.omg.SendingContext.RunTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service("slackService")
 public class SlackService {
@@ -65,37 +64,53 @@ public class SlackService {
         return reviewRepository.save(review);
     }
 
-    private User createUser(String slackId) {
-        return userRepository.save(new User(0, slackId, new ArrayList<>()));
-    }
 
-    @Transactional
-    public ResponseEntity<String> delete(String bookName, String user, String channel) {
-        Book book = bookRepository.findByTitle(bookName.replace(" ", "")).get();
-        Review review = book.getReviewsBySlackId(user);
-        reviewRepository.delete(review);
-        return messageSender.send(bookName + "의 <@" + user + "> 가 쓴 리뷰가 삭제되었습니다.", channel);
+    public Review deleteReview(String bookName, String slackId, String channel) {
+        Book book = bookRepository.findByTitle(bookName).orElseThrow(()->new RuntimeException("틀린 책 이름"));
+        User user = userRepository.findBySlackId(slackId).orElseThrow(() -> new RuntimeException("틀린 슬랙 ID"));
+        Review review = reviewRepository.findByBook_IdAndWriter_Id(book.getId(), user.getId()).orElseThrow(() -> new RuntimeException("리뷰를 찾을 수 없습니다"));
+        reviewRepository.deleteById(review.getId());
+
+        messageSender.send("아래 리뷰가 삭제되었습니다.", channel);
+        messageSender.sendReview(channel, review);
+
+        return review;
     }
 
     public ResponseEntity<String> echo(String slackId, String text, String channel) {
         return messageSender.send("<@" + slackId + ">'s echo : " + text, channel);
     }
 
-    public Review createReview(String bookName, String text, String slackId) {
-        Book book = bookRepository.findByTitle(bookName.replace(" ", "")).orElseThrow(RuntimeException::new);   //todo
+    public Review createReview(String bookName, String text, String slackId, String channel) {
+        Book book = bookRepository.findByTitle(bookName).orElseThrow(RuntimeException::new);
         Optional<User> maybeUser = userRepository.findBySlackId(slackId);
-        if (maybeUser.isPresent()) {
-            return reviewRepository.save(new Review(0, text, book, maybeUser.get()));
+        if (!maybeUser.isPresent()) {
+            maybeUser = Optional.of(createUser(slackId));
         }
-        User user = createUser(slackId);
-        return reviewRepository.save(new Review(0, text, book, user));
+        Optional<Review> maybeReview = reviewRepository.findByBook_IdAndWriter_Id(book.getId(), maybeUser.get().getId());
+        Review review;
+        if (maybeReview.isPresent()) {
+            maybeReview.get().setReview(text);
+            review = maybeReview.get();
+        }else{
+            review = new Review(text, book, maybeUser.get());
+        }
+        messageSender.sendReview(channel, review);
+        return reviewRepository.save(review);
+    }
+
+
+    public User createUser(String slackId) {
+        System.out.println("CREATE USER!!!!" + slackId);
+        return userRepository.save(new User(slackId, new ArrayList<>()));
     }
 
     public List<Book> search(String query) {
         List<String> queries = Arrays.asList(query.split(" "));
         if (queries.size() == 0) {
-            throw new RuntimeException("Empty query");    //todo
+            return new ArrayList<>();
         }
+        List<Book> debug = bookRepository.findAll(); //debug
         List<Book> books = bookRepository.findByTitleLike("%"+queries.get(0)+"%");
         for (int i = 1; i < queries.size(); i++) {
             if (books.size() == 1) {
@@ -124,7 +139,6 @@ public class SlackService {
 
 
     public ResponseEntity<String>  selectBook(String channel, List<Book> books) {
-
        return messageSender.sendBooks(channel, books);
     }
 
