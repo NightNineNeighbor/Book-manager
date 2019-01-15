@@ -35,7 +35,6 @@ public class ManyBooks implements State {
             return "WRONG INPUT";
         }
 
-        ChatBotState.put(serviceResolver.getSlackId(), needBook.nextState());
-        return needBook.beforeService(service, serviceResolver, books.get(index-1).getTitle());
+        return needBook.serviceWithBookName(service, serviceResolver, books.get(index-1).getTitle());
     }
 }

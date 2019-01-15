@@ -25,14 +25,11 @@ public class ReviewCreateExpectContents implements State, NeedBook {
     }
 
     @Override
-    public String beforeService(SlackService service, ServiceResolver serviceResolver, String bookName) {
+    public String serviceWithBookName(SlackService service, ServiceResolver serviceResolver, String bookName) {
         this.bookName = bookName;
         service.askReviewContents(serviceResolver.getChannel());
+        ChatBotState.put(serviceResolver.getSlackId(), this);
         return "SAVE BOOK NAME";
     }
 
-    @Override
-    public State nextState() {
-        return this;
-    }
 }

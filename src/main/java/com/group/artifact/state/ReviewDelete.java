@@ -10,25 +10,26 @@ public class ReviewDelete implements State, NeedBook {
     @Override
     public String doService(SlackService service, ServiceResolver serviceResolver) {
         List<Book> books = service.search(serviceResolver.getText());
-        if (books.size() == 1) {
+        if (books.size() == 0) {
+            service.askBookName(serviceResolver.getChannel());
+            ChatBotState.put(serviceResolver.getSlackId(), this);
+            return "ASK BOOK NAME";
+        } else if (books.size() == 1) {
             service.deleteReview(books.get(0).getTitle(), serviceResolver.getSlackId(), serviceResolver.getChannel());
+            ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
             return "DELETE REVIEW";
-        } else if (books.size() >= 1) {
+        } else {
             service.selectBook(serviceResolver.getChannel(), books);
             ChatBotState.put(serviceResolver.getSlackId(), new ManyBooks(books, this));
             return "MANY BOOK";
         }
-        return null;
     }
 
     @Override
-    public String beforeService(SlackService service, ServiceResolver serviceResolver, String bookName) {
+    public String serviceWithBookName(SlackService service, ServiceResolver serviceResolver, String bookName) {
         service.deleteReview(bookName, serviceResolver.getSlackId(), serviceResolver.getChannel());
+        ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
         return "DELETE REVIEW";
     }
 
-    @Override
-    public State nextState() {
-        return StateZero.me;
-    }
 }

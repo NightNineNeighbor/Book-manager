@@ -106,13 +106,17 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         softly.assertThat(before - after).isEqualTo(1);
     }
 
-    //    @Test
+    @Test
     public void deleteReview() {
+        Review review = new Review("원래 존재하는 리뷰", null, null);
+        review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
+        review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review);
         int before = (int) reviewRepository.count();
-        ResponseEntity<String> response = postMessage("리뷰 삭제");
+        ResponseEntity<String> response = postMessage("!리뷰 !삭제",Fixture.mmm.getSlackId());
         softly.assertThat(response.getBody()).contains("ASK BOOK NAME");
 
-        ResponseEntity<String> response1 = postMessage("성공하는 프로그래밍 공부법");
+        ResponseEntity<String> response1 = postMessage("첫 번째 책",Fixture.mmm.getSlackId());
         softly.assertThat(response1.getBody()).contains("DELETE REVIEW");
 
         int after = (int) reviewRepository.count();
