@@ -91,7 +91,7 @@ public class SlackService {
 
     public List<Book> search(String query) {
         List<String> queries = Arrays.asList(query.split(" "));
-        if (queries.size() == 0) {
+        if (queries.size() == 0 || queries.get(0).equals("")) {
             return new ArrayList<>();
         }
         List<Book> debug = bookRepository.findAll(); //debug
