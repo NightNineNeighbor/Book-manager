@@ -37,11 +37,4 @@ public class TokenTest extends AcceptanceTest {
         log.info("naverClientSecret {}", naverClientSecret);
         softly.assertThat(naverClientSecret).isNotNull();
     }
-
-    @Test
-    public void exist() throws Exception{
-        ClassPathResource resource = new ClassPathResource("BotToken");
-        File file = resource.getFile();
-        assertThat(file.exists()).isTrue();
-    }
 }

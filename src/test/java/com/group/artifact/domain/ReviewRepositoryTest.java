@@ -3,27 +3,38 @@ package com.group.artifact.domain;
 import com.group.artifact.AcceptanceTest;
 import com.group.artifact.fixture.Fixture;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
 public class ReviewRepositoryTest extends AcceptanceTest {
-    @Autowired
-    ReviewRepository reviewRepository;
+    private static final Logger log = LoggerFactory.getLogger(ReviewRepositoryTest.class);
 
     @Autowired
-    BookRepository bookRepository;
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Test
     public void findByBookAndSlackId() {
-        Book book = bookRepository.findByTitle("성공하는프로그래밍공부법").get();
-        User user = userRepository.findBySlackId(Fixture.nnn.getSlackId()).get();
+        bookRepository.save(Fixture.book);
+        userRepository.save(Fixture.defaultUser);
+        Book savedBook = bookRepository.findByTitle(Fixture.book.getTitle()).get();
+        User savedUser = userRepository.findBySlackId(Fixture.defaultUser.getSlackId()).get();
 
-        Optional<Review> maybeReview = reviewRepository.findByBook_IdAndWriter_Id(book.getId(), user.getId());
-        System.out.println(maybeReview.get());
+        Review review = Fixture.reviewOne();
+        review.setBook(savedBook);
+        review.setWriter(savedUser);
+        reviewRepository.save(review);
+
+        Optional<Review> maybeReview = reviewRepository.findByBook_IdAndWriter_Id(savedBook.getId(), savedUser.getId());
+        log.info("{}", maybeReview.get().toString());
         softly.assertThat(maybeReview.isPresent()).isTrue();
     }
 }

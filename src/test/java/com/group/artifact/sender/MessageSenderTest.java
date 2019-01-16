@@ -10,14 +10,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MessageSenderTest extends AcceptanceTest {
     private static final Logger log = LoggerFactory.getLogger(MessageSenderTest.class);
 
     @Autowired
     private MessageSender sender;
 
-    @Test
-    public void sendReview(){
+//    @Test
+    public void sendReview(){   //todo
+        Review review = Fixture.reviewOne();
+        review.setBook(Fixture.book);
+        review.setWriter(Fixture.defaultUser);
+
+
         ResponseEntity<String> response = sender.sendReview(Fixture.channel,Fixture.review);
 
         log.info("response : {}", response.toString());
@@ -26,7 +34,15 @@ public class MessageSenderTest extends AcceptanceTest {
 
     @Test
     public void review(){
-        ResponseEntity<String> response = sender.review(Fixture.book.getReviews(), Fixture.channel);
+        Review review = Fixture.reviewOne();
+        review.setBook(Fixture.book);
+        review.setWriter(Fixture.defaultUser);
+
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(review);
+        reviews.add(review);
+
+        ResponseEntity<String> response = sender.review(reviews, Fixture.channel);
 
         log.info("response : {}", response.toString());
         softly.assertThat(response.getBody()).contains("\"ok\":true");

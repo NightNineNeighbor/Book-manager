@@ -21,15 +21,15 @@ public class Fixture {
         echo.setEvent(event);
     }
 
-    public static User nnn;
-    public static User mmm;
+    public static User defaultUser;
+    public static User otherUser;
     public static Review review;
     public static Review review2;
     public static Book book;
     public static Book book2;
     static{
-        nnn = new User(0, "UD7QN97QS", new ArrayList<>());
-        mmm = new User(0, "UCR3RN38X", new ArrayList<>());
+        defaultUser = new User(0, "UD7QN97QS", new ArrayList<>());
+        otherUser = new User(0, "UCR3RN38X", new ArrayList<>());
         book = new Book(0,
                 "첫 번째 책",
                 "첫 번째 목차",
@@ -44,6 +44,14 @@ public class Fixture {
                 "https://example.com");
         review = new Review(0, "첫 번째 리뷰",null, null);
         review2 = new Review(0, "두 번째 리뷰", null, null);
+    }
+
+    public static Review reviewOne(){
+        return new Review(0, "첫 번째 리뷰",null, null);
+    }
+
+    public static Review ReviewTwo(){
+        return new Review(0, "두 번째 리뷰",null, null);
     }
 
 }

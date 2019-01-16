@@ -60,21 +60,16 @@ public class SlackService {
         if (!maybeUser.isPresent()) {
             maybeUser = Optional.of(createUser(slackId));
         }
+        User user = maybeUser.get();
+
         Optional<Review> maybeReview = reviewRepository.findByBook_IdAndWriter_Id(book.getId(), maybeUser.get().getId());
-        Review review;
-        if (maybeReview.isPresent()) {
-            maybeReview.get().setReview(text);
-            review = maybeReview.get();
-        }else{
-            review = new Review(text, book, maybeUser.get());
-        }
+        Review review = maybeReview.map((r)->{r.setReview(text);return r;}).orElseGet(()->new Review(text, book, user));
+
         messageSender.sendReview(channel, review);
         return reviewRepository.save(review);
     }
 
-
     public User createUser(String slackId) {
-        System.out.println("CREATE USER!!!!" + slackId);
         return userRepository.save(new User(slackId, new ArrayList<>()));
     }
 
@@ -87,9 +82,9 @@ public class SlackService {
         for (int i = 1; i < queries.size(); i++) {
             if (books.size() == 1) {
                 return books;
-            }else if (books.size() == 0) {
-                books = bookRepository.findByTitleLike("%"+queries.get(i)+"%");
-            }else {
+            } else if (books.size() == 0) {
+                books = bookRepository.findByTitleLike("%" + queries.get(i) + "%");
+            } else {
                 books = search(books, queries.get(i));
             }
         }

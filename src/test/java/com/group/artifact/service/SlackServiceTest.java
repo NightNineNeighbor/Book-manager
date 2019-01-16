@@ -3,6 +3,7 @@ package com.group.artifact.service;
 import com.group.artifact.AcceptanceTest;
 import com.group.artifact.domain.*;
 import com.group.artifact.fixture.Fixture;
+import com.group.artifact.helper.DBInitializer;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,18 +27,25 @@ public class SlackServiceTest extends AcceptanceTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private DBInitializer dbInitializer;
+
+    @Before
+    public void setup(){
+        dbInitializer.inite();
+    }
+
     @Test
     public void readReviews(){
-        bookRepository.save(Fixture.book);
-        userRepository.save(Fixture.mmm);
+        userRepository.save(Fixture.otherUser);
         Review review = new Review("mmm의 리뷰", null, null);
-        review.setWriter(userRepository.findBySlackId(Fixture.mmm.getSlackId()).get());
+        review.setWriter(userRepository.findBySlackId(Fixture.otherUser.getSlackId()).get());
         review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review);
 
-        userRepository.save(Fixture.nnn);
+        userRepository.save(Fixture.defaultUser);
         Review review1 = new Review("nnn의 리뷰", null, null);
-        review1.setWriter(userRepository.findBySlackId(Fixture.nnn.getSlackId()).get());
+        review1.setWriter(userRepository.findBySlackId(Fixture.defaultUser.getSlackId()).get());
         review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review1);
 
@@ -46,15 +54,15 @@ public class SlackServiceTest extends AcceptanceTest {
     }
 
     @Test
-    public void deleteReview(){bookRepository.save(Fixture.book);
-        userRepository.save(Fixture.nnn);
+    public void deleteReview(){
+        userRepository.save(Fixture.defaultUser);
         Review review = new Review("새 리뷰", null, null);
-        review.setWriter(userRepository.findBySlackId(Fixture.nnn.getSlackId()).get());
+        review.setWriter(userRepository.findBySlackId(Fixture.defaultUser.getSlackId()).get());
         review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review);
 
         int before = (int) reviewRepository.count();
-        slackService.deleteReview(Fixture.book.getTitle(), Fixture.nnn.getSlackId(), Fixture.channel);
+        slackService.deleteReview(Fixture.book.getTitle(), Fixture.defaultUser.getSlackId(), Fixture.channel);
         int after = (int) reviewRepository.count();
 
         softly.assertThat(before - after).isEqualTo(1);
@@ -62,7 +70,7 @@ public class SlackServiceTest extends AcceptanceTest {
 
     @Test
     public void createReview(){
-        slackService.updateOrCreateReview("성공하는프로그래밍공부법", "새로운 내용", Fixture.mmm.getSlackId(),Fixture.channel);
+        slackService.updateOrCreateReview(Fixture.book.getTitle(), "새로운 내용", Fixture.otherUser.getSlackId(),Fixture.channel);
 
         System.out.println(reviewRepository.findByReview("새로운 내용"));
         softly.assertThat(reviewRepository.findByReview("새로운 내용").getReview()).isEqualTo("새로운 내용");
@@ -70,18 +78,9 @@ public class SlackServiceTest extends AcceptanceTest {
 
     @Test
     public void search(){
-        List<Book> books = slackService.search("성공하는 프로그래밍 공부법");
+        List<Book> books = slackService.search("책");
         for (Book book : books) {
             System.out.println(book);
         }
-    }
-
-
-
-//    @Test
-    public void echo() {
-        ResponseEntity<String> response = slackService.echo(Fixture.echo);
-        System.out.println(response.toString());
-        softly.assertThat(response.getBody()).contains("\"ok\":true");
     }
 }
