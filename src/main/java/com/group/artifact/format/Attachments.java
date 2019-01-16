@@ -18,9 +18,15 @@ public class Attachments {
 
     public static Attachments ofBookInfo(Book book, String channel) {
         Attachments bookInfo = new Attachments(channel);
-        bookInfo.add(new Info(book.getTitle(), book.getBestReview()));
+        bookInfo.add(new Info("제목", book.getTitle()));
         bookInfo.add(new Info("저자", book.getAuthor()));
         bookInfo.add(new Info("목차", book.getContents()));
+
+        List<Review> reviews = book.getReviews();
+        for (int i = 0; i < reviews.size(); i++) {
+            bookInfo.add(new Info("리뷰 " + (i + 1), reviews.get(i).getReview()));
+        }
+
         return bookInfo;
     }
 

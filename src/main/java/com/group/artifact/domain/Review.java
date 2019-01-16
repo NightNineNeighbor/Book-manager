@@ -24,6 +24,12 @@ public class Review {
         this.writer = writer;
     }
 
+    public Review(String review, Book book, User writer) {
+        this.review = review;
+        this.book = book;
+        this.writer = writer;
+    }
+
     public static Review of(String review, Book book) {
         return new Review(0, review, book, null);//todo : add default user
     }
@@ -71,5 +77,13 @@ public class Review {
 
     public boolean isSameUser(String slackId) {
         return slackId.equals(writer.getSlackId());
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", review='" + review + '\'' +
+                '}';
     }
 }

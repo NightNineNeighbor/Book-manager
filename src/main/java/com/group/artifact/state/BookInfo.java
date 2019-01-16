@@ -1,18 +1,21 @@
 package com.group.artifact.state;
 
+import com.group.artifact.domain.Book;
 import com.group.artifact.service.ServiceResolver;
 import com.group.artifact.service.SlackService;
-import com.group.artifact.stateStarter.Command;
+
+import java.util.List;
 
 public class BookInfo implements State{
     @Override
     public String doService(SlackService service, ServiceResolver serviceResolver) {
-        service.sendBookInfo(serviceResolver.getText(), serviceResolver.getChannel());
-        return "SEND BOOK INFO";
-    }
+        List<Book> books = service.search(serviceResolver.getText());
+        if (books.size() == 1) {
+            service.sendBookInfo(books.get(0).getTitle(), serviceResolver.getChannel());
+            ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
+            return "BOOK INFO";
+        }
 
-    @Override
-    public State nextState(boolean isBookName, Command command) {
-        return command.initState(isBookName);
+        return null;
     }
 }

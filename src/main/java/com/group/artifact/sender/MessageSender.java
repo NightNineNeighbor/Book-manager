@@ -31,7 +31,7 @@ public class MessageSender {
     @Autowired
     private RequestCreator requestCreator;
 
-    public List<String> crawlReviews(String bookName)  {
+    public List<String> crawlReviews(String bookName) {
         List<String> reviews;
         try {
             String searchLink = url.getAladinSearch(bookName);
@@ -47,7 +47,7 @@ public class MessageSender {
             throw new StopCrawlException(StopCrawlException.JSOUP_CONNECT_IOEXCEPTION);
         }
 
-        for (int i = reviews.size()-2; i >=0 ; i = i-2) {
+        for (int i = reviews.size() - 2; i >= 0; i = i - 2) {
             reviews.remove(i);
         }
 
@@ -98,4 +98,23 @@ public class MessageSender {
                 String.class);
     }
 
+    public ResponseEntity<String> sendBooks(String channel, List<Book> books) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < books.size(); i++) {
+            sb.append(i+1);
+            sb.append(". ");
+            sb.append(books.get(i).getTitle());
+            sb.append(System.lineSeparator());
+        }
+        sb.append("해당하는 책의 번호를 입력하세요");
+        return restTemplate.postForEntity(url.getPostMessage(),
+                requestCreator.simpleText(sb.toString(), channel),
+                String.class);
+    }
+
+    public ResponseEntity<String> sendReview(String channel, Review review) {
+        return restTemplate.postForEntity(url.getPostMessage(),
+                requestCreator.sendOneReview(review, channel),
+                String.class);
+    }
 }

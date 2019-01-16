@@ -1,29 +1,27 @@
 package com.group.artifact.stateStarter;
 
-import com.group.artifact.state.*; import java.util.function.Supplier;
+import com.group.artifact.state.*;
+
+import java.util.function.Supplier;
 
 public enum Command {
-    REVIEW_READ(ReadReviewWithBookName::new, ReadReviewWithoutBookName::new),
-    REVIEW_CREATE(CreateReviewWithBookName::new, CreateReviewWithoutBookName::new),
-    REVIEW_UPDATE(UpdateReviewWithBookName::new, UpdateReviewWithoutBookName::new),
-    REVIEW_DELETE(DeleteReviewWithBookName::new, DeleteReviewWithoutBookName::new),
-    NO_COMMAND(BookInfo::new,Echo::new),
-    DO_NOTHING(DoNothing::new,DoNothing::new);
+    STATE_ZERO(null),
+    BOOK_INFO(BookInfo::new),
+    REVIEW_READ(ReviewRead::new),
+    REVIEW_CREATE(ReviewUpdate::new),
+    REVIEW_UPDATE(ReviewUpdate::new),
+    REVIEW_DELETE(ReviewDelete::new),
+    NO_COMMAND(null),
+    DO_NOTHING(null);
 
 
-    private Supplier<State> isBookName;
-    private Supplier<State> noBookName;
+    private Supplier<State> stateIniter;
 
-    Command(Supplier<State> isBookName, Supplier<State> noBookName) {
-        this.noBookName = noBookName;
-        this.isBookName = isBookName;
+    Command(Supplier<State> stateIniter) {
+        this.stateIniter = stateIniter;
     }
 
-    public State initState(boolean isBookName) {
-        if (isBookName) {
-            return this.isBookName.get();
-        }
-        return noBookName.get();
+    public State initState() {
+        return this.stateIniter.get();
     }
-
 }
