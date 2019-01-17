@@ -19,6 +19,7 @@ public class BookInfo implements State, NeedBookName{
             ChatBotState.remove(serviceResolver.getSlackId());
             return "BOOK INFO";
         } else {
+            service.selectBook(serviceResolver.getChannel(), books);
             ChatBotState.put(serviceResolver.getSlackId(), new ProxyWithManyBookNames(books, this));
             return "MANY BOOK";
         }
