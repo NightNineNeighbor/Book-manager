@@ -84,4 +84,13 @@ public class RequestCreator {
         attachments.add(new Info("내가 쓴 리뷰","!나의리뷰"));
         return new HttpEntity<>(attachments, getJsonHeaders());
     }
+
+    public HttpEntity<Attachments> reviewWithBook(List<Review> reviews, String channel) {
+        Attachments attachments = new Attachments(channel);
+        for (Review review : reviews) {
+            attachments.add(new Info(review.getBook().getTitle(), review.getReview()));
+        }
+        return new HttpEntity<>(attachments,
+                getJsonHeaders());
+    }
 }

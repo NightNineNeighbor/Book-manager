@@ -13,6 +13,8 @@ public enum Command {
     NO_COMMAND(DoNothing::new),
     DO_NOTHING(DoNothing::new),
     EXIT_COMMAND_MODE(ExitCommand::new),
+    ALL_BOOK(AllBook::new),
+    MY_REVIEWS(MyReviews::new),
     USAGE(Usage::new);
 
 

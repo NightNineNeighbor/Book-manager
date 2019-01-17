@@ -36,6 +36,24 @@ public class ApiSlackControllerTest extends AcceptanceTest {
     }
 
     @Test
+    public void allBook(){
+        ResponseEntity<String> response = postMessage("!모든책", Fixture.otherUser.getSlackId());
+        softly.assertThat(response.getBody()).contains("ALL BOOK");
+    }
+
+    @Test
+    public void myReviews(){
+        ResponseEntity<String> response = postMessage("!나의리뷰", Fixture.otherUser.getSlackId());
+        softly.assertThat(response.getBody()).contains("MY REVIEWS");
+    }
+
+    @Test
+    public void usage(){
+        ResponseEntity<String> response = postMessage("!사용법", Fixture.otherUser.getSlackId());
+        softly.assertThat(response.getBody()).contains("USAGE");
+    }
+
+    @Test
     public void createReviewManyBook() {
         ResponseEntity<String> response = postMessage("번째 책 !리뷰 !등록", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("MANY BOOK");

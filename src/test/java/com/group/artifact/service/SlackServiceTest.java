@@ -31,8 +31,43 @@ public class SlackServiceTest extends AcceptanceTest {
     private DBInitializer dbInitializer;
 
     @Before
-    public void setup(){
+    public void setup() {
         dbInitializer.inite();
+    }
+    
+    @Test
+    public void allBook(){
+        ResponseEntity<String> response = slackService.allBook(Fixture.channel);
+        softly.assertThat(response.getBody()).contains("\"ok\":true");
+    }
+
+    @Test
+    public void usage(){
+        ResponseEntity<String> response = slackService.usage(Fixture.channel);
+        softly.assertThat(response.getBody()).contains("\"ok\":true");
+    }
+
+    @Test
+    public void readAllReviewOfOneUser(){
+        userRepository.save(Fixture.defaultUser);
+
+        Review review = new Review("default의 리뷰1", null, null);
+        review.setWriter(userRepository.findBySlackId(Fixture.defaultUser.getSlackId()).get());
+        review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review);
+
+        Review review2 = new Review("default의 리뷰2", null, null);
+        review2.setWriter(userRepository.findBySlackId(Fixture.defaultUser.getSlackId()).get());
+        review2.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
+        reviewRepository.save(review2);
+
+        Review review3 = new Review("default의 리뷰3", null, null);
+        review3.setWriter(userRepository.findBySlackId(Fixture.defaultUser.getSlackId()).get());
+        review3.setBook(bookRepository.findByTitle(Fixture.book2.getTitle()).get());
+        reviewRepository.save(review3);
+
+        ResponseEntity<String> response = slackService.allReview(Fixture.defaultUser.getSlackId(), Fixture.channel);
+        softly.assertThat(response.getBody()).contains("\"ok\":true");
     }
 
     @Test
