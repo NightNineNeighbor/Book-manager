@@ -15,8 +15,9 @@ public class ReviewUpdateExpectBook implements State {
         if (command == Command.NO_COMMAND) {
             List<Book> books = service.search(serviceResolver.getText());
             if (books.size() == 0) {
-                service.askBookName(serviceResolver.getChannel());
-                return "ASK BOOK NAME";
+                service.send("해당하는 책 이름이 없습니다.", serviceResolver.getChannel());
+                ChatBotState.remove(serviceResolver.getSlackId());
+                return "NO BOOK NAME";
             } else if (books.size() == 1) {
                 service.askReviewContents(serviceResolver.getChannel());
                 ChatBotState.put(serviceResolver.getSlackId(), new ReviewUpdateExpectContents(books.get(0).getTitle()));

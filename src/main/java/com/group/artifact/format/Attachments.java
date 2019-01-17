@@ -30,14 +30,6 @@ public class Attachments {
         return bookInfo;
     }
 
-    public static Attachments ofReview(List<Review> reviews, String channel) {
-        Attachments reviewInfo = new Attachments(channel);
-        for (Review review : reviews) {
-            reviewInfo.add(new Info(review.getWrappedId(), review.getReview()));
-        }
-        return reviewInfo;
-    }
-
     public String getChannel() {
         return channel;
     }

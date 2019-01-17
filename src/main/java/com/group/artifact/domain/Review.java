@@ -2,6 +2,7 @@ package com.group.artifact.domain;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 public class Review {
@@ -30,8 +31,8 @@ public class Review {
         this.writer = writer;
     }
 
-    public static Review of(String review, Book book) {
-        return new Review(0, review, book, null);//todo : add default user
+    public static Review of(String review, Book book, User botUser) {
+        return new Review(review, book, botUser);
     }
 
     public long getId() {
@@ -72,11 +73,6 @@ public class Review {
 
     public boolean isSameUser(User user) {
         return id == user.getId();
-    }
-
-
-    public boolean isSameUser(String slackId) {
-        return slackId.equals(writer.getSlackId());
     }
 
     @Override

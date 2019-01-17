@@ -105,18 +105,38 @@ public class SlackService {
     }
 
 
-    public ResponseEntity<String>  selectBook(String channel, List<Book> books) {
-       return messageSender.sendBooks(channel, books);
+    public ResponseEntity<String> selectBook(String channel, List<Book> books) {
+        messageSender.sendBooks(channel, books);
+        return messageSender.send("해당하는 책 번호를 입력하세요", channel);
     }
 
-    public void error(String s) { //todo
-
-    }
 
     @Transactional
     public ResponseEntity<String> readReview(String bookName, String channel) {
         Book book = bookRepository.findByTitle(bookName).orElseThrow(() -> new RuntimeException("잘못된 책 이름입니다."));
         List<Review> reviews = book.getReviews();
         return messageSender.review(reviews, channel);
+    }
+
+    public ResponseEntity<String> send(String message, String channel) {
+        return messageSender.send(message, channel);
+    }
+
+    public ResponseEntity<String> usage(String channel) {
+        return messageSender.usage(channel);
+    }
+
+    public ResponseEntity<String> allBook(String channel) {
+        List<Book> books = bookRepository.findAll();
+        return messageSender.sendBooks(channel, books);
+    }
+
+    @Transactional
+    public ResponseEntity<String> allReview(String slackId, String channel) {
+        Optional<User> maybeUser = userRepository.findBySlackId(slackId);
+        if (maybeUser.isPresent() && maybeUser.get().getReview().size() != 0 ) {
+            return messageSender.sendReviews(channel, maybeUser.get().getReview());
+        }
+        return messageSender.send("등록된 리뷰가 없습니다.", channel);
     }
 }

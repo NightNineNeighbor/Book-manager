@@ -1,17 +1,10 @@
 package com.group.artifact.service;
 
-import com.group.artifact.domain.Book;
 import com.group.artifact.state.ChatBotState;
-import com.group.artifact.stateStarter.Command;
 import com.group.artifact.state.State;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.group.artifact.stateStarter.Command;
 
 public class ServiceResolver {
-    private static Map<String, State> beforeState = new HashMap<>();
-
     private Command command;
     private String text;
     private String slackId;
@@ -24,21 +17,13 @@ public class ServiceResolver {
         this.channel = channel;
     }
 
-    public String doSomething(SlackService service) {
-        List<Book> books = service.search(text);
-        State currentState = ChatBotState.currentState(slackId, command, books);
-        return currentState.doService(service, this);
+    public ServiceResolver(Command command) {
+        this.command = command;
+    }
 
-//        if (beforeState.containsKey(slackId)) {
-//            State currentState = beforeState.get(slackId).nextState(isBookName, command);
-//            ret = currentState.doService(service, this);
-//            beforeState.put(slackId, currentState);
-//            return ret;
-//        }
-//        State currentState1 = State.of(isBookName, command);
-//        ret = currentState1.doService(service, this);
-//        beforeState.put(slackId, currentState1);
-//        return ret;
+    public String doSomething(SlackService service) {
+        State currentState = ChatBotState.currentState(slackId, command);
+        return currentState.doService(service, this);
     }
 
     public Command getCommand() {

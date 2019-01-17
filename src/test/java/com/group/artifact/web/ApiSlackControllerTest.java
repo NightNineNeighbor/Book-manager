@@ -36,6 +36,24 @@ public class ApiSlackControllerTest extends AcceptanceTest {
     }
 
     @Test
+    public void allBook(){
+        ResponseEntity<String> response = postMessage("!모든책", Fixture.otherUser.getSlackId());
+        softly.assertThat(response.getBody()).contains("ALL BOOK");
+    }
+
+    @Test
+    public void myReviews(){
+        ResponseEntity<String> response = postMessage("!나의리뷰", Fixture.otherUser.getSlackId());
+        softly.assertThat(response.getBody()).contains("MY REVIEWS");
+    }
+
+    @Test
+    public void usage(){
+        ResponseEntity<String> response = postMessage("!사용법", Fixture.otherUser.getSlackId());
+        softly.assertThat(response.getBody()).contains("USAGE");
+    }
+
+    @Test
     public void createReviewManyBook() {
         ResponseEntity<String> response = postMessage("번째 책 !리뷰 !등록", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("MANY BOOK");
@@ -48,21 +66,6 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
         Review review = reviewRepository.findByReview("other");
         softly.assertThat("other").isEqualTo(review.getReview());
-    }
-
-    @Test
-    public void createReview() {
-        ResponseEntity<String> response = postMessage("!리뷰 !등록", Fixture.otherUser.getSlackId());
-        softly.assertThat(response.getBody()).contains("ASK BOOK NAME");
-
-        ResponseEntity<String> response1 = postMessage("첫 번째 책", Fixture.otherUser.getSlackId());
-        softly.assertThat(response1.getBody()).contains("ASK REVIEW CONTENTS");
-
-        ResponseEntity<String> response2 = postMessage("다른 사람이 작성한 새로운 내용입니다.", Fixture.otherUser.getSlackId());
-        softly.assertThat(response2.getBody()).contains("CREATE REVIEW");
-
-        Review review = reviewRepository.findByReview("다른 사람이 작성한 새로운 내용입니다.");
-        softly.assertThat("다른 사람이 작성한 새로운 내용입니다.").isEqualTo(review.getReview());
     }
 
     @Test
@@ -94,24 +97,6 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         softly.assertThat(response.getBody()).contains("MANY BOOK");
 
         ResponseEntity<String> response1 = postMessage("1", Fixture.otherUser.getSlackId());
-        softly.assertThat(response1.getBody()).contains("DELETE REVIEW");
-
-        int after = (int) reviewRepository.count();
-        softly.assertThat(before - after).isEqualTo(1);
-    }
-
-    @Test
-    public void deleteReview() {
-        userRepository.save(Fixture.otherUser);
-        Review review = new Review("원래 존재하는 리뷰", null, null);
-        review.setWriter(userRepository.findBySlackId(Fixture.otherUser.getSlackId()).get());
-        review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
-        reviewRepository.save(review);
-        int before = (int) reviewRepository.count();
-        ResponseEntity<String> response = postMessage("!리뷰 !삭제", Fixture.otherUser.getSlackId());
-        softly.assertThat(response.getBody()).contains("ASK BOOK NAME");
-
-        ResponseEntity<String> response1 = postMessage("첫 번째 책", Fixture.otherUser.getSlackId());
         softly.assertThat(response1.getBody()).contains("DELETE REVIEW");
 
         int after = (int) reviewRepository.count();
@@ -180,27 +165,6 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         softly.assertThat(response.getBody()).contains("MANY BOOK");
 
         ResponseEntity<String> response1 = postMessage("1", Fixture.otherUser.getSlackId());
-        softly.assertThat(response1.getBody()).contains("READ REVIEW");
-    }
-
-    @Test
-    public void reviewBook() {
-        userRepository.save(Fixture.otherUser);
-        Review review = new Review("mmm의 리뷰", null, null);
-        review.setWriter(userRepository.findBySlackId(Fixture.otherUser.getSlackId()).get());
-        review.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
-        reviewRepository.save(review);
-
-        userRepository.save(Fixture.defaultUser);
-        Review review1 = new Review("nnn의 리뷰", null, null);
-        review1.setWriter(userRepository.findBySlackId(Fixture.defaultUser.getSlackId()).get());
-        review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
-        reviewRepository.save(review1);
-
-        ResponseEntity<String> response = postMessage("!리뷰", Fixture.otherUser.getSlackId());
-        softly.assertThat(response.getBody()).contains("ASK BOOK NAME");
-
-        ResponseEntity<String> response1 = postMessage("첫 번째 책", Fixture.otherUser.getSlackId());
         softly.assertThat(response1.getBody()).contains("READ REVIEW");
     }
 

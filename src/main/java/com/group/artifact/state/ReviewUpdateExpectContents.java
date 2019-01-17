@@ -18,7 +18,7 @@ public class ReviewUpdateExpectContents implements State, NeedBookName {
     public String doService(SlackService service, ServiceResolver serviceResolver) {
         if (serviceResolver.getCommand() == Command.NO_COMMAND) {
             service.updateOrCreateReview(bookName, serviceResolver.getText(), serviceResolver.getSlackId(),serviceResolver.getChannel());
-            ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
+            ChatBotState.remove(serviceResolver.getSlackId());
             return "CREATE REVIEW";
         }
         return serviceResolver.getCommand().initState().doService(service, serviceResolver);

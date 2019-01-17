@@ -106,7 +106,6 @@ public class MessageSender {
             sb.append(books.get(i).getTitle());
             sb.append(System.lineSeparator());
         }
-        sb.append("해당하는 책의 번호를 입력하세요");
         return restTemplate.postForEntity(url.getPostMessage(),
                 requestCreator.simpleText(sb.toString(), channel),
                 String.class);
@@ -115,6 +114,18 @@ public class MessageSender {
     public ResponseEntity<String> sendReview(String channel, Review review) {
         return restTemplate.postForEntity(url.getPostMessage(),
                 requestCreator.sendOneReview(review, channel),
+                String.class);
+    }
+
+    public ResponseEntity<String> usage(String channel) {
+        return restTemplate.postForEntity(url.getPostMessage(),
+                requestCreator.usage(channel),
+                String.class);
+    }
+
+    public ResponseEntity<String> sendReviews(String channel, List<Review> review) {
+        return restTemplate.postForEntity(url.getPostMessage(),
+                requestCreator.reviewWithBook(review, channel),
                 String.class);
     }
 }
