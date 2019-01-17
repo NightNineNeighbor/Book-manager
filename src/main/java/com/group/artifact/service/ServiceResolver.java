@@ -1,17 +1,10 @@
 package com.group.artifact.service;
 
-import com.group.artifact.domain.Book;
 import com.group.artifact.state.ChatBotState;
-import com.group.artifact.stateStarter.Command;
 import com.group.artifact.state.State;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.group.artifact.stateStarter.Command;
 
 public class ServiceResolver {
-    private static Map<String, State> beforeState = new HashMap<>();
-
     private Command command;
     private String text;
     private String slackId;
@@ -22,6 +15,10 @@ public class ServiceResolver {
         this.text = text;
         this.slackId = slackId;
         this.channel = channel;
+    }
+
+    public ServiceResolver(Command command) {
+        this.command = command;
     }
 
     public String doSomething(SlackService service) {

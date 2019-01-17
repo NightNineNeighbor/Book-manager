@@ -117,4 +117,10 @@ public class MessageSender {
                 requestCreator.sendOneReview(review, channel),
                 String.class);
     }
+
+    public ResponseEntity<String> usage(String channel) {
+        return restTemplate.postForEntity(url.getPostMessage(),
+                requestCreator.usage(channel),
+                String.class);
+    }
 }

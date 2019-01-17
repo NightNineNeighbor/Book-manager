@@ -59,6 +59,14 @@ public class SlackEvent {
             return new ServiceResolver(Command.NO_COMMAND, null, null, null);
         }
 
+        if (this.text.contains("!탈출")) {
+            return new ServiceResolver(Command.EXIT_COMMAND_MODE);
+        }
+
+        if (this.text.contains("!사용법")) {
+            return new ServiceResolver(Command.USAGE);
+        }
+
         if (this.text.contains("!정보")) {
             return new ServiceResolver(Command.BOOK_INFO,
                     this.text.replace("!정보", ""),

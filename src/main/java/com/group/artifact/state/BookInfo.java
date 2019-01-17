@@ -12,7 +12,8 @@ public class BookInfo implements State, NeedBookName{
         List<Book> books = service.search(serviceResolver.getText());
         if (books.size() == 0) {
             service.send("해당하는 책 이름이 없습니다.", serviceResolver.getChannel());
-            return "NO BOOK INFO";
+            ChatBotState.remove(serviceResolver.getSlackId());
+            return "NO BOOK NAME";
         } else if (books.size() == 1) {
             service.sendBookInfo(books.get(0).getTitle(), serviceResolver.getChannel());
             ChatBotState.remove(serviceResolver.getSlackId());

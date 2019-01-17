@@ -70,4 +70,18 @@ public class RequestCreator {
         headers.set("Authorization", "Bearer " + token.getBotToken());
         return headers;
     }
+
+    public HttpEntity<Attachments> usage(String channel) {
+        Attachments attachments = new Attachments(channel);
+        attachments.add(new Info("사용법","!사용법"));
+        attachments.add(new Info("명령 초기화","!탈출"));
+        attachments.add(new Info("도서 정보","도서명 !정보"));
+        attachments.add(new Info("리뷰 조회","도서명 !리뷰"));
+        attachments.add(new Info("리뷰 등록","도서명 !리뷰 !등록"));
+        attachments.add(new Info("리뷰 삭제","도서명 !리뷰 !삭제"));
+        attachments.add(new Info("리뷰 수정","도서명 !리뷰 !수정"));
+        attachments.add(new Info("모든 도서 리스트","!모든책"));
+        attachments.add(new Info("내가 쓴 리뷰","!나의리뷰"));
+        return new HttpEntity<>(attachments, getJsonHeaders());
+    }
 }

@@ -23,11 +23,13 @@ public class ProxyWithManyBookNames implements State {
             index = Integer.parseInt(text);
         } catch (NumberFormatException e) {
             service.send("잘못된 입력입니다.", serviceResolver.getChannel());
+            ChatBotState.remove(serviceResolver.getSlackId());
             return "WRONG INPUT";
         }
 
         if (index > books.size()) {
             service.send("잘못된 입력입니다", serviceResolver.getChannel());
+            ChatBotState.remove(serviceResolver.getSlackId());
             return "WRONG INPUT";
         }
 

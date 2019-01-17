@@ -120,4 +120,8 @@ public class SlackService {
     public ResponseEntity<String> send(String message, String channel) {
         return messageSender.send(message, channel);
     }
+
+    public ResponseEntity<String> usage(String channel) {
+        return messageSender.usage(channel);
+    }
 }

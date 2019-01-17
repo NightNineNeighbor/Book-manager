@@ -11,7 +11,9 @@ public enum Command {
     REVIEW_UPDATE(ReviewUpdate::new),
     REVIEW_DELETE(ReviewDelete::new),
     NO_COMMAND(DoNothing::new),
-    DO_NOTHING(DoNothing::new);
+    DO_NOTHING(DoNothing::new),
+    EXIT_COMMAND_MODE(ExitCommand::new),
+    USAGE(Usage::new);
 
 
     private Supplier<State> stateIniter;
