@@ -56,23 +56,23 @@ public class SlackEvent {
 
     public ServiceResolver parse() {
         if (this.subtype != null && this.subtype.equals("bot_message")) {
-            return new ServiceResolver(Command.NO_COMMAND);
+            return new ServiceResolver(Command.DO_NOTHING);
         }
 
         if (this.text.contains("!모든책")) {
-            return new ServiceResolver(Command.ALL_BOOK);
+            return new ServiceResolver(Command.ALL_BOOK,this.channel);
         }
 
         if (this.text.contains("!나의리뷰")) {
-            return new ServiceResolver(Command.MY_REVIEWS);
+            return new ServiceResolver(Command.MY_REVIEWS, this.channel);
         }
 
         if (this.text.contains("!탈출")) {
-            return new ServiceResolver(Command.EXIT_COMMAND_MODE);
+            return new ServiceResolver(Command.EXIT_COMMAND_MODE, this.channel);
         }
 
         if (this.text.contains("!사용법")) {
-            return new ServiceResolver(Command.USAGE);
+            return new ServiceResolver(Command.USAGE, this.channel);
         }
 
         if (this.text.contains("!정보")) {

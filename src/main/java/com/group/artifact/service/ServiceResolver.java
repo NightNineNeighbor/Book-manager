@@ -21,6 +21,11 @@ public class ServiceResolver {
         this.command = command;
     }
 
+    public ServiceResolver(Command command , String channel) {
+        this.command = command;
+        this.channel = channel;
+    }
+
     public String doSomething(SlackService service) {
         State currentState = ChatBotState.currentState(slackId, command);
         return currentState.doService(service, this);
