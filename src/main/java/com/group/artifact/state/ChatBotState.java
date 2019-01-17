@@ -21,4 +21,8 @@ public class ChatBotState {
         savedState.put(slackId, state);
     }
 
+    public static void remove(String slackId) {
+        savedState.remove(slackId);
+    }
+
 }

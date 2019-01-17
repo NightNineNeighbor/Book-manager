@@ -15,7 +15,7 @@ public class BookInfo implements State, NeedBookName{
             return "NO BOOK INFO";
         } else if (books.size() == 1) {
             service.sendBookInfo(books.get(0).getTitle(), serviceResolver.getChannel());
-            ChatBotState.put(serviceResolver.getSlackId(), StateZero.me);
+            ChatBotState.remove(serviceResolver.getSlackId());
             return "BOOK INFO";
         } else {
             ChatBotState.put(serviceResolver.getSlackId(), new ProxyWithManyBookNames(books, this));
