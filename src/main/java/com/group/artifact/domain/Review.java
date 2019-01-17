@@ -2,6 +2,7 @@ package com.group.artifact.domain;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 public class Review {
@@ -30,8 +31,8 @@ public class Review {
         this.writer = writer;
     }
 
-    public static Review of(String review, Book book) {
-        return new Review(0, review, book, new User("", null));
+    public static Review of(String review, Book book, User botUser) {
+        return new Review(review, book, botUser);
     }
 
     public long getId() {

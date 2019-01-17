@@ -1,10 +1,7 @@
 package com.group.artifact.init;
 
 import com.group.artifact.Exception.StopCrawlException;
-import com.group.artifact.domain.Book;
-import com.group.artifact.domain.BookRepository;
-import com.group.artifact.domain.Review;
-import com.group.artifact.domain.ReviewRepository;
+import com.group.artifact.domain.*;
 import com.group.artifact.sender.MessageSender;
 import com.group.artifact.vo.CrawledBook;
 import org.jsoup.Jsoup;
@@ -22,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -38,12 +36,18 @@ public class BookIniter {
     private ReviewRepository reviewRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private ResourceLoader resourceLoader;
+
+    private User botUser;
 
 
     @EventListener(ApplicationReadyEvent.class)
     public void initBook() {
         Resource resource = resourceLoader.getResource("classpath:BookNames");
+        botUser = userRepository.save(new User("BOT", new ArrayList<>()));
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
             String bookName;
             while ((bookName = reader.readLine()) != null) {
@@ -61,7 +65,7 @@ public class BookIniter {
         List<String> reviews = messageSender.crawlReviews(bookName);
 
         for (String review : reviews) {
-            reviewRepository.save(Review.of(review, book));
+            reviewRepository.save(Review.of(review, book, botUser));
         }
     }
 
