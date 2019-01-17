@@ -25,20 +25,8 @@ public class ServiceResolver {
     }
 
     public String doSomething(SlackService service) {
-        List<Book> books = service.search(text);
-        State currentState = ChatBotState.currentState(slackId, command, books);
+        State currentState = ChatBotState.currentState(slackId, command);
         return currentState.doService(service, this);
-
-//        if (beforeState.containsKey(slackId)) {
-//            State currentState = beforeState.get(slackId).nextState(isBookName, command);
-//            ret = currentState.doService(service, this);
-//            beforeState.put(slackId, currentState);
-//            return ret;
-//        }
-//        State currentState1 = State.of(isBookName, command);
-//        ret = currentState1.doService(service, this);
-//        beforeState.put(slackId, currentState1);
-//        return ret;
     }
 
     public Command getCommand() {

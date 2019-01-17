@@ -109,14 +109,15 @@ public class SlackService {
        return messageSender.sendBooks(channel, books);
     }
 
-    public void error(String s) { //todo
-
-    }
 
     @Transactional
     public ResponseEntity<String> readReview(String bookName, String channel) {
         Book book = bookRepository.findByTitle(bookName).orElseThrow(() -> new RuntimeException("잘못된 책 이름입니다."));
         List<Review> reviews = book.getReviews();
         return messageSender.review(reviews, channel);
+    }
+
+    public ResponseEntity<String> send(String message, String channel) {
+        return messageSender.send(message, channel);
     }
 }

@@ -19,14 +19,13 @@ public class MessageSenderTest extends AcceptanceTest {
     @Autowired
     private MessageSender sender;
 
-//    @Test
+    @Test
     public void sendReview(){   //todo
         Review review = Fixture.reviewOne();
         review.setBook(Fixture.book);
         review.setWriter(Fixture.defaultUser);
 
-
-        ResponseEntity<String> response = sender.sendReview(Fixture.channel,Fixture.review);
+        ResponseEntity<String> response = sender.sendReview(Fixture.channel,review);
 
         log.info("response : {}", response.toString());
         softly.assertThat(response.getBody()).contains("\"ok\":true");

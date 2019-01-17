@@ -1,7 +1,6 @@
 package com.group.artifact.helper;
 
 import com.group.artifact.domain.BookRepository;
-import com.group.artifact.domain.Review;
 import com.group.artifact.domain.ReviewRepository;
 import com.group.artifact.domain.UserRepository;
 import com.group.artifact.fixture.Fixture;

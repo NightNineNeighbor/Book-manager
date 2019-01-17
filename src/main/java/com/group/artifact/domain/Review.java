@@ -31,7 +31,7 @@ public class Review {
     }
 
     public static Review of(String review, Book book) {
-        return new Review(0, review, book, null);//todo : add default user
+        return new Review(0, review, book, new User("", null));
     }
 
     public long getId() {
@@ -72,11 +72,6 @@ public class Review {
 
     public boolean isSameUser(User user) {
         return id == user.getId();
-    }
-
-
-    public boolean isSameUser(String slackId) {
-        return slackId.equals(writer.getSlackId());
     }
 
     @Override

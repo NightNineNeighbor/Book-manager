@@ -13,7 +13,7 @@ import java.util.List;
 public class AladinCrawlTest extends AcceptanceTest {
 
     @Autowired
-    Url url;
+    private Url url;
 
     @Test
     public void crawlAladin() throws Exception {

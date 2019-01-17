@@ -22,12 +22,12 @@ public class ProxyWithManyBookNames implements State {
         try {
             index = Integer.parseInt(text);
         } catch (NumberFormatException e) {
-            service.error("잘못된 입력입니다.");
+            service.send("잘못된 입력입니다.", serviceResolver.getChannel());
             return "WRONG INPUT";
         }
 
         if (index > books.size()) {
-            service.error("잘못된 입력입니다");
+            service.send("잘못된 입력입니다", serviceResolver.getChannel());
             return "WRONG INPUT";
         }
 

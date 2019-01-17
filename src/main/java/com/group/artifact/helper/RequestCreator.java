@@ -56,18 +56,18 @@ public class RequestCreator {
         return new HttpEntity<>(map, getJsonHeaders());
     }
 
-    private HttpHeaders getJsonHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + token.getBotToken());
-        return headers;
-    }
-
     public HttpEntity<Attachments> sendOneReview(Review review, String channel) {
         Attachments attachments = new Attachments(channel);
         attachments.add(new Info("책 이름", review.getBook().getTitle()));
         attachments.add(new Info("리뷰", review.getReview()));
         return new HttpEntity<>(attachments,
                 getJsonHeaders());
+    }
+
+    private HttpHeaders getJsonHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token.getBotToken());
+        return headers;
     }
 }

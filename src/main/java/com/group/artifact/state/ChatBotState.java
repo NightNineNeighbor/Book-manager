@@ -10,7 +10,7 @@ import java.util.Map;
 public class ChatBotState {
     private static Map<String, State> savedState = new HashMap<>();
 
-    public static State currentState(String slackId, Command command, List<Book> books) {
+    public static State currentState(String slackId, Command command) {
         if (savedState.containsKey(slackId)) {
             return savedState.get(slackId);
         }
