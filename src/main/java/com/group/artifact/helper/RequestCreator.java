@@ -4,6 +4,7 @@ import com.group.artifact.domain.Book;
 import com.group.artifact.domain.Review;
 import com.group.artifact.format.Attachments;
 import com.group.artifact.format.Info;
+import com.group.artifact.stateStarter.Command;
 import com.group.artifact.vo.SlackAcceptor;
 import com.group.artifact.vo.Token;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class RequestCreator {
 
     public HttpEntity<Void> crawlingHeader(){
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Naver-Client-Id", "vajWHFNqfloEuhxste1B");
-        headers.add("X-Naver-Client-Secret", "WW4Y6t1HSN");
+        headers.add("X-Naver-Client-Id", token.getNaverClientId());
+        headers.add("X-Naver-Client-Secret", token.getNaverClientSecret());
         return new HttpEntity<>(headers);
     }
 
@@ -73,15 +74,15 @@ public class RequestCreator {
 
     public HttpEntity<Attachments> usage(String channel) {
         Attachments attachments = new Attachments(channel);
-        attachments.add(new Info("사용법","!사용법"));
-        attachments.add(new Info("명령 초기화","!탈출"));
-        attachments.add(new Info("도서 정보","도서명 !정보"));
-        attachments.add(new Info("리뷰 조회","도서명 !리뷰"));
-        attachments.add(new Info("리뷰 등록","도서명 !리뷰 !등록"));
-        attachments.add(new Info("리뷰 삭제","도서명 !리뷰 !삭제"));
-        attachments.add(new Info("리뷰 수정","도서명 !리뷰 !수정"));
-        attachments.add(new Info("모든 도서 리스트","!모든책"));
-        attachments.add(new Info("내가 쓴 리뷰","!나의리뷰"));
+        attachments.add(new Info("사용법", Command.USAGE.getMatcher()));
+        attachments.add(new Info("명령 초기화",Command.EXIT_COMMAND_MODE.getMatcher()));
+        attachments.add(new Info("도서 정보","도서명 "+Command.BOOK_INFO.getMatcher()));
+        attachments.add(new Info("리뷰 조회","도서명 "+Command.REVIEW_READ.getMatcher()));
+        attachments.add(new Info("리뷰 등록","도서명 "+Command.REVIEW_CREATE.getMatcher()));
+        attachments.add(new Info("리뷰 삭제","도서명 "+Command.REVIEW_DELETE.getMatcher()));
+        attachments.add(new Info("리뷰 수정","도서명 "+Command.REVIEW_UPDATE.getMatcher()));
+        attachments.add(new Info("모든 도서 리스트",Command.ALL_BOOK.getMatcher()));
+        attachments.add(new Info("내가 쓴 리뷰",Command.MY_REVIEWS.getMatcher()));
         return new HttpEntity<>(attachments, getJsonHeaders());
     }
 

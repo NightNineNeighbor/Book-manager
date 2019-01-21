@@ -59,46 +59,10 @@ public class SlackEvent {
             return new ServiceResolver(Command.DO_NOTHING);
         }
 
-        if (this.text.contains("!모든책")) {
-            return new ServiceResolver(Command.ALL_BOOK, this.text, this.user, this.channel);
-        }
-
-        if (this.text.contains("!나의리뷰")) {
-            return new ServiceResolver(Command.MY_REVIEWS, this.text, this.user, this.channel);
-        }
-
-        if (this.text.contains("!탈출")) {
-            return new ServiceResolver(Command.EXIT_COMMAND_MODE, this.text, this.user, this.channel);
-        }
-
-        if (this.text.contains("!사용법")) {
-            return new ServiceResolver(Command.USAGE, this.text, this.user, this.channel);
-        }
-
-        if (this.text.contains("!정보")) {
-            return new ServiceResolver(Command.BOOK_INFO,
-                    this.text.replace("!정보", ""),
-                    this.user,
-                    this.channel);
-        }
-
-        if (this.text.contains("!리뷰")) {
-            String pureText = this.text.replace("!리뷰", "");
-            Command command;
-            if (this.text.contains("!등록")) {
-                pureText = pureText.replace("!등록", "");
-                command = Command.REVIEW_CREATE;
-            }else if(this.text.contains("!삭제")){
-                pureText = pureText.replace("!삭제", "");
-                command = Command.REVIEW_DELETE;
-            }else if (this.text.contains("!수정")){
-                pureText = pureText.replace("!수정", "");
-                command = Command.REVIEW_UPDATE;
-            }else{
-                command = Command.REVIEW_READ;
-            }
-            return new ServiceResolver(command, pureText, this.user, this.channel);
-        }
-        return new ServiceResolver(Command.NO_COMMAND, this.text, this.user, this.channel);
+        Command command = Command.matchCommand(this.text);
+        return new ServiceResolver(command,
+                command.removeMatcher(this.text),
+                this.user,
+                this.channel);
     }
 }

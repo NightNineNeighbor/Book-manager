@@ -55,7 +55,6 @@ public class Book {
         this.title = title;
     }
 
-    //todo
     public String getContents() {
         return contents.replace("\\n", "\n");
     }

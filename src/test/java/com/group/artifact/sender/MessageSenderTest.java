@@ -20,7 +20,7 @@ public class MessageSenderTest extends AcceptanceTest {
     private MessageSender sender;
 
     @Test
-    public void sendReview(){   //todo
+    public void sendReview(){
         Review review = Fixture.reviewOne();
         review.setBook(Fixture.book);
         review.setWriter(Fixture.defaultUser);
