@@ -19,9 +19,8 @@ public class ApiSlackController {
     @Autowired
     private SlackService slackService;
 
-    //todo : change mapping url
-    @PostMapping("/valid")
-    public String sortingHat(@RequestBody SlackAcceptor acceptor) { //Harry Potter
+    @PostMapping("/listener")
+    public String listener(@RequestBody SlackAcceptor acceptor) {
         if (acceptor.isChallenge()) {
             return acceptor.getChallenge();
         }

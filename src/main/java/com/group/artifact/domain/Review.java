@@ -2,7 +2,6 @@ package com.group.artifact.domain;
 
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @Entity
 public class Review {
@@ -16,7 +15,8 @@ public class Review {
     @ManyToOne
     private User writer;
 
-    public Review(){}
+    public Review() {
+    }
 
     public Review(long id, String review, Book book, User writer) {
         this.id = id;

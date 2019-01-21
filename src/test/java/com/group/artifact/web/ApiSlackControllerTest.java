@@ -55,7 +55,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
     @Test
     public void createReviewManyBook() {
-        ResponseEntity<String> response = postMessage("번째 책 !리뷰 !등록", Fixture.otherUser.getSlackId());
+        ResponseEntity<String> response = postMessage("번째 책 !리뷰등록", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("MANY BOOK");
 
         ResponseEntity<String> response1 = postMessage("1", Fixture.otherUser.getSlackId());
@@ -77,7 +77,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         reviewRepository.save(review);
         int before = (int) reviewRepository.count();
 
-        ResponseEntity<String> response = postMessage("첫 번째 책 !리뷰 !삭제", Fixture.otherUser.getSlackId());
+        ResponseEntity<String> response = postMessage("첫 번째 책 !리뷰삭제", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("DELETE REVIEW");
 
         int after = (int) reviewRepository.count();
@@ -93,7 +93,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         reviewRepository.save(review);
         int before = (int) reviewRepository.count();
 
-        ResponseEntity<String> response = postMessage("번째 책 !리뷰 !삭제", Fixture.otherUser.getSlackId());
+        ResponseEntity<String> response = postMessage("번째 책 !리뷰삭제", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("MANY BOOK");
 
         ResponseEntity<String> response1 = postMessage("1", Fixture.otherUser.getSlackId());
@@ -113,7 +113,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
         int before = (int) reviewRepository.count();
 
-        ResponseEntity<String> response = postMessage("첫 번째 책 !리뷰 !수정", Fixture.otherUser.getSlackId());
+        ResponseEntity<String> response = postMessage("첫 번째 책 !리뷰수정", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("ASK CONTENTS");
 
         ResponseEntity<String> response1 = postMessage("새로운 내용", Fixture.otherUser.getSlackId());
@@ -143,7 +143,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review1);
 
-        ResponseEntity<String> response = postMessage("첫 번째 책 !리뷰", Fixture.otherUser.getSlackId());
+        ResponseEntity<String> response = postMessage("첫 번째 책 !리뷰조회", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("READ REVIEW");
     }
 
@@ -161,7 +161,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
         review1.setBook(bookRepository.findByTitle(Fixture.book.getTitle()).get());
         reviewRepository.save(review1);
 
-        ResponseEntity<String> response = postMessage("번째 책 !리뷰", Fixture.otherUser.getSlackId());
+        ResponseEntity<String> response = postMessage("번째 책 !리뷰조회", Fixture.otherUser.getSlackId());
         softly.assertThat(response.getBody()).contains("MANY BOOK");
 
         ResponseEntity<String> response1 = postMessage("1", Fixture.otherUser.getSlackId());

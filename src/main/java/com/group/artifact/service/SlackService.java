@@ -34,10 +34,6 @@ public class SlackService {
         return messageSender.bookInfo(book, channel);
     }
 
-    public ResponseEntity<String> askBookName(String channel) {
-        return messageSender.send("책 이름을 입력해 주세요", channel);
-    }
-
     public ResponseEntity<String> askReviewContents(String channel) {
         return messageSender.send("리뷰 내용을 입력해 주세요", channel);
     }
