@@ -1,6 +1,6 @@
 package com.group.artifact.vo;
 
-import com.group.artifact.state_interface.State;
+import com.group.artifact.state.state_interface.State;
 import com.group.artifact.stateStarter.Command;
 
 public class MessageVo {

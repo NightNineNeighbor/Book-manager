@@ -4,7 +4,8 @@ import com.group.artifact.domain.Book;
 import com.group.artifact.service.SlackService;
 import com.group.artifact.stateStarter.Command;
 import com.group.artifact.state_collection.ChatBotState;
-import com.group.artifact.state_interface.State;
+import com.group.artifact.state.state_interface.State;
+import com.group.artifact.state.state_proxy.ProxyWithManyBookNames;
 import com.group.artifact.vo.MessageVo;
 
 import java.util.List;

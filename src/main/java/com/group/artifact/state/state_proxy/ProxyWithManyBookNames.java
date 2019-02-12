@@ -1,9 +1,9 @@
-package com.group.artifact.state;
+package com.group.artifact.state.state_proxy;
 
 import com.group.artifact.domain.Book;
 import com.group.artifact.state_collection.ChatBotState;
-import com.group.artifact.state_interface.NeedBookNameState;
-import com.group.artifact.state_interface.State;
+import com.group.artifact.state.state_interface.NeedBookNameState;
+import com.group.artifact.state.state_interface.State;
 import com.group.artifact.vo.MessageVo;
 import com.group.artifact.service.SlackService;
 

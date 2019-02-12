@@ -1,7 +1,7 @@
 package com.group.artifact.state_collection;
 
 import com.group.artifact.service.SlackService;
-import com.group.artifact.state_interface.State;
+import com.group.artifact.state.state_interface.State;
 import com.group.artifact.vo.MessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
