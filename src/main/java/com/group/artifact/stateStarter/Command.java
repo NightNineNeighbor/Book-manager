@@ -1,11 +1,12 @@
 package com.group.artifact.stateStarter;
 
 import com.group.artifact.state.*;
+import com.group.artifact.state.state_interface.State;
 
 import java.util.function.Supplier;
 
 public enum Command {
-    BOOK_INFO(BookInfo::new, "!정보"),
+    BOOK_INFO(BookInfoState::new, "!정보"),
     REVIEW_READ(ReviewRead::new, "!리뷰조회"),
     REVIEW_CREATE(ReviewUpdate::new, "!리뷰등록"),
     REVIEW_UPDATE(ReviewUpdate::new, "!리뷰수정"),

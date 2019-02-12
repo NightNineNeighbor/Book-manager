@@ -1,15 +1,15 @@
 package com.group.artifact.state;
 
 import com.group.artifact.domain.Book;
+import com.group.artifact.service.SlackService;
 import com.group.artifact.state_collection.ChatBotState;
 import com.group.artifact.state.state_interface.NeedBookNameState;
 import com.group.artifact.state.state_proxy.ProxyWithManyBookNames;
 import com.group.artifact.vo.MessageVo;
-import com.group.artifact.service.SlackService;
 
 import java.util.List;
 
-public class ReviewRead implements NeedBookNameState {
+public class BookInfoState implements NeedBookNameState {
     @Override
     public String doService(SlackService service, MessageVo messageVo, ChatBotState chatBotState) {
         List<Book> books = service.search(messageVo.getText());
@@ -18,9 +18,9 @@ public class ReviewRead implements NeedBookNameState {
             chatBotState.remove(messageVo);
             return "NO BOOK NAME";
         } else if (books.size() == 1) {
-            service.readReview(books.get(0).getTitle(), messageVo.getChannel());
+            service.sendBookInfo(books.get(0).getTitle(), messageVo.getChannel());
             chatBotState.remove(messageVo);
-            return "READ REVIEW";
+            return "BOOK INFO";
         } else {
             service.selectBook(messageVo.getChannel(), books);
             chatBotState.put(messageVo, new ProxyWithManyBookNames(books, this));
@@ -30,8 +30,7 @@ public class ReviewRead implements NeedBookNameState {
 
     @Override
     public String serviceWithBookName(SlackService service, MessageVo messageVo, String bookName, ChatBotState chatBotState) {
-        service.readReview(bookName, messageVo.getChannel());
-        chatBotState.remove(messageVo);
-        return "READ REVIEW";
+        service.sendBookInfo(bookName, messageVo.getChannel());
+        return "BOOK INFO";
     }
 }

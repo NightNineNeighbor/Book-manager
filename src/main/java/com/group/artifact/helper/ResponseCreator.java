@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class RequestCreator {
+public class ResponseCreator {
     @Autowired
     private Token token;
 

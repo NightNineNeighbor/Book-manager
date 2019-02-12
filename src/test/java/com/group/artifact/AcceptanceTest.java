@@ -32,20 +32,20 @@ public class AcceptanceTest {
 
     protected ResponseEntity<String> postToThisController(String jsonFile) {
         String json = jsonReader.read(jsonFile);
-        return template.postForEntity("/api/valid", makeRequest(json), String.class);
+        return template.postForEntity("/api/listener", makeRequest(json), String.class);
     }
 
     protected ResponseEntity<String> postMessage(String message) {
         java.lang.String json = jsonReader.read("format.json")
                 .replace("{{message}}", message);
-        return template.postForEntity("/api/valid", makeRequest(json), java.lang.String.class);
+        return template.postForEntity("/api/listener", makeRequest(json), java.lang.String.class);
     }
 
     protected ResponseEntity<String> postMessage(String message, String slackId) {
         java.lang.String json = jsonReader.read("format2.json")
                 .replace("{{message}}", message)
                 .replace("{{user}}", slackId);
-        return template.postForEntity("/api/valid", makeRequest(json), java.lang.String.class);
+        return template.postForEntity("/api/listener", makeRequest(json), java.lang.String.class);
     }
 
     protected HttpEntity<String> makeRequest(String json) {
