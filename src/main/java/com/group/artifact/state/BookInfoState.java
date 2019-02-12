@@ -1,15 +1,14 @@
 package com.group.artifact.state;
 
 import com.group.artifact.domain.Book;
-import com.group.artifact.state_collection.ChatBotState;
-import com.group.artifact.state_interface.NeedBookName;
-import com.group.artifact.state_interface.State;
-import com.group.artifact.vo.MessageVo;
 import com.group.artifact.service.SlackService;
+import com.group.artifact.state_collection.ChatBotState;
+import com.group.artifact.state_interface.NeedBookNameState;
+import com.group.artifact.vo.MessageVo;
 
 import java.util.List;
 
-public class BookInfo implements State, NeedBookName {
+public class BookInfoState implements NeedBookNameState {
     @Override
     public String doService(SlackService service, MessageVo messageVo, ChatBotState chatBotState) {
         List<Book> books = service.search(messageVo.getText());

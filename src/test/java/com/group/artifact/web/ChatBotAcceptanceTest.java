@@ -16,8 +16,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
 
-public class ApiSlackControllerTest extends AcceptanceTest {
-    private static final Logger log = LoggerFactory.getLogger(ApiSlackControllerTest.class);
+public class ChatBotAcceptanceTest extends AcceptanceTest {
+    private static final Logger log = LoggerFactory.getLogger(ChatBotAcceptanceTest.class);
     @Autowired
     private ReviewRepository reviewRepository;
 

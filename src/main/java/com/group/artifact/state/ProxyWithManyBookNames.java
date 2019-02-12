@@ -2,7 +2,7 @@ package com.group.artifact.state;
 
 import com.group.artifact.domain.Book;
 import com.group.artifact.state_collection.ChatBotState;
-import com.group.artifact.state_interface.NeedBookName;
+import com.group.artifact.state_interface.NeedBookNameState;
 import com.group.artifact.state_interface.State;
 import com.group.artifact.vo.MessageVo;
 import com.group.artifact.service.SlackService;
@@ -11,11 +11,11 @@ import java.util.List;
 
 public class ProxyWithManyBookNames implements State {
     private List<Book> books;
-    private NeedBookName needBookName;
+    private NeedBookNameState needBookNameState;
 
-    public ProxyWithManyBookNames(List<Book> books, NeedBookName needBookName) {
+    public ProxyWithManyBookNames(List<Book> books, NeedBookNameState needBookNameState) {
         this.books = books;
-        this.needBookName = needBookName;
+        this.needBookNameState = needBookNameState;
     }
 
     @Override
@@ -36,6 +36,6 @@ public class ProxyWithManyBookNames implements State {
             return "WRONG INPUT";
         }
 
-        return needBookName.serviceWithBookName(service, messageVo, books.get(index-1).getTitle(), chatBotState);
+        return needBookNameState.serviceWithBookName(service, messageVo, books.get(index-1).getTitle(), chatBotState);
     }
 }
