@@ -3,7 +3,7 @@ package com.group.artifact.sender;
 import com.group.artifact.Exception.StopCrawlException;
 import com.group.artifact.domain.Book;
 import com.group.artifact.domain.Review;
-import com.group.artifact.helper.RequestCreator;
+import com.group.artifact.helper.ResponseCreator;
 import com.group.artifact.vo.CrawledBook;
 import com.group.artifact.vo.NaverAcceptor;
 import com.group.artifact.vo.SlackAcceptor;
@@ -29,7 +29,7 @@ public class MessageSender {
     private Url url;
 
     @Autowired
-    private RequestCreator requestCreator;
+    private ResponseCreator responseCreator;
 
     public List<String> crawlReviews(String bookName) {
         List<String> reviews;
@@ -68,33 +68,33 @@ public class MessageSender {
         return restTemplate.exchange(
                 url.getNaverApi(bookName),
                 HttpMethod.GET,
-                requestCreator.crawlingHeader(),
+                responseCreator.crawlingHeader(),
                 NaverAcceptor.class).getBody()
                 .getFirstItem();
     }
 
     public ResponseEntity<String> echo(SlackAcceptor acceptor) {
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.echo(acceptor),
+                responseCreator.echo(acceptor),
                 String.class);
     }
 
     public ResponseEntity<String> bookInfo(Book book, String channel) {
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.bookInfo(book, channel),
+                responseCreator.bookInfo(book, channel),
                 String.class);
     }
 
     public ResponseEntity<String> review(List<Review> reviews, String channel) {
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.review(reviews, channel),
+                responseCreator.review(reviews, channel),
                 String.class);
     }
 
 
     public ResponseEntity<String> send(String text, String channel) {
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.simpleText(text, channel),
+                responseCreator.simpleText(text, channel),
                 String.class);
     }
 
@@ -107,25 +107,25 @@ public class MessageSender {
             sb.append(System.lineSeparator());
         }
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.simpleText(sb.toString(), channel),
+                responseCreator.simpleText(sb.toString(), channel),
                 String.class);
     }
 
     public ResponseEntity<String> sendReview(String channel, Review review) {
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.sendOneReview(review, channel),
+                responseCreator.sendOneReview(review, channel),
                 String.class);
     }
 
     public ResponseEntity<String> usage(String channel) {
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.usage(channel),
+                responseCreator.usage(channel),
                 String.class);
     }
 
     public ResponseEntity<String> sendReviews(String channel, List<Review> review) {
         return restTemplate.postForEntity(url.getPostMessage(),
-                requestCreator.reviewWithBook(review, channel),
+                responseCreator.reviewWithBook(review, channel),
                 String.class);
     }
 }
