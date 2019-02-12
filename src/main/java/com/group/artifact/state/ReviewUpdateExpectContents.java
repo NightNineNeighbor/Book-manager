@@ -1,6 +1,9 @@
 package com.group.artifact.state;
 
-import com.group.artifact.service.ServiceResolver;
+import com.group.artifact.state_collection.ChatBotState;
+import com.group.artifact.state_interface.NeedBookName;
+import com.group.artifact.state_interface.State;
+import com.group.artifact.vo.MessageVo;
 import com.group.artifact.service.SlackService;
 import com.group.artifact.stateStarter.Command;
 
@@ -15,20 +18,20 @@ public class ReviewUpdateExpectContents implements State, NeedBookName {
     ReviewUpdateExpectContents() {}
 
     @Override
-    public String doService(SlackService service, ServiceResolver serviceResolver) {
-        if (serviceResolver.getCommand() == Command.NO_COMMAND) {
-            service.updateOrCreateReview(bookName, serviceResolver.getText(), serviceResolver.getSlackId(),serviceResolver.getChannel());
-            ChatBotState.remove(serviceResolver.getSlackId());
+    public String doService(SlackService service, MessageVo messageVo, ChatBotState chatBotState) {
+        if (messageVo.getCommand() == Command.NO_COMMAND) {
+            service.updateOrCreateReview(bookName, messageVo.getText(), messageVo.getSlackId(), messageVo.getChannel());
+            chatBotState.remove(messageVo);
             return "CREATE REVIEW";
         }
-        return serviceResolver.getCommand().initState().doService(service, serviceResolver);
+        return messageVo.getCommand().initState().doService(service, messageVo, chatBotState);
     }
 
     @Override
-    public String serviceWithBookName(SlackService service, ServiceResolver serviceResolver, String bookName) {
+    public String serviceWithBookName(SlackService service, MessageVo messageVo, String bookName, ChatBotState chatBotState) {
         this.bookName = bookName;
-        service.askReviewContents(serviceResolver.getChannel());
-        ChatBotState.put(serviceResolver.getSlackId(), this);
+        service.askReviewContents(messageVo.getChannel());
+        chatBotState.put(messageVo , this);
         return "SAVE BOOK NAME";
     }
 

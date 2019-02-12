@@ -1,7 +1,10 @@
 package com.group.artifact.state;
 
 import com.group.artifact.domain.Book;
-import com.group.artifact.service.ServiceResolver;
+import com.group.artifact.state_collection.ChatBotState;
+import com.group.artifact.state_interface.NeedBookName;
+import com.group.artifact.state_interface.State;
+import com.group.artifact.vo.MessageVo;
 import com.group.artifact.service.SlackService;
 
 import java.util.List;
@@ -16,23 +19,23 @@ public class ProxyWithManyBookNames implements State {
     }
 
     @Override
-    public String doService(SlackService service, ServiceResolver serviceResolver) {
-        String text = serviceResolver.getText();
+    public String doService(SlackService service, MessageVo messageVo, ChatBotState chatBotState) {
+        String text = messageVo.getText();
         int index;
         try {
             index = Integer.parseInt(text);
         } catch (NumberFormatException e) {
-            service.send("잘못된 입력입니다.", serviceResolver.getChannel());
-            ChatBotState.remove(serviceResolver.getSlackId());
+            service.send("잘못된 입력입니다.", messageVo.getChannel());
+            chatBotState.remove(messageVo);
             return "WRONG INPUT";
         }
 
         if (index > books.size()) {
-            service.send("잘못된 입력입니다", serviceResolver.getChannel());
-            ChatBotState.remove(serviceResolver.getSlackId());
+            service.send("잘못된 입력입니다", messageVo.getChannel());
+            chatBotState.remove(messageVo);
             return "WRONG INPUT";
         }
 
-        return needBookName.serviceWithBookName(service, serviceResolver, books.get(index-1).getTitle());
+        return needBookName.serviceWithBookName(service, messageVo, books.get(index-1).getTitle(), chatBotState);
     }
 }

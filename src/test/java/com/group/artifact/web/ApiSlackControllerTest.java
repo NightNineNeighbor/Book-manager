@@ -195,7 +195,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
         HttpEntity<String> request = makeRequest(json);
 
-        ResponseEntity<String> response = template().postForEntity("/api/valid", request, String.class);
+        ResponseEntity<String> response = template().postForEntity("/api/listener", request, String.class);
         log.info("response : {}", response.toString());
         softly.assertThat(response.getBody()).isEqualTo(challengeToken);
     }

@@ -1,7 +1,7 @@
 package com.group.artifact.web;
 
-import com.group.artifact.service.SlackService;
-import com.group.artifact.service.ServiceResolver;
+import com.group.artifact.vo.MessageVo;
+import com.group.artifact.state_collection.ChatBotState;
 import com.group.artifact.vo.SlackAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class ApiSlackController {
     private static final Logger logger = LoggerFactory.getLogger(ApiSlackController.class);
 
     @Autowired
-    private SlackService slackService;
+    private ChatBotState chatBotState;
 
     @PostMapping("/listener")
     public String listener(@RequestBody SlackAcceptor acceptor) {
@@ -25,7 +25,7 @@ public class ApiSlackController {
             return acceptor.getChallenge();
         }
 
-        ServiceResolver serviceResolver = acceptor.parse();
-        return serviceResolver.doSomething(slackService);
+        MessageVo messageVo = acceptor.parse();
+        return chatBotState.doService(messageVo);
     }
 }
