@@ -22,9 +22,7 @@ public class BookInfoState extends NeedBookNameState {
             stateContainer.remove(messageVo);
             return "NO BOOK NAME";
         } else if (books.size() == 1) {
-            service.sendBookInfo(books.get(0).getTitle(), messageVo.getChannel());
-            stateContainer.remove(messageVo);
-            return "BOOK INFO";
+            return serviceWithBookName(messageVo, books.get(0).getTitle());
         } else {
             service.selectBook(messageVo.getChannel(), books);
             stateContainer.put(messageVo, new ProxyWithManyBookNames(books, this));
@@ -35,6 +33,7 @@ public class BookInfoState extends NeedBookNameState {
     @Override
     public String serviceWithBookName(MessageVo messageVo, String bookName) {
         service.sendBookInfo(bookName, messageVo.getChannel());
+        stateContainer.remove(messageVo);
         return "BOOK INFO";
     }
 }

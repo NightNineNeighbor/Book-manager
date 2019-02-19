@@ -36,5 +36,4 @@ public class ReviewUpdateExpectContents extends NeedBookNameState {
         stateContainer.put(messageVo, this);
         return "SAVE BOOK NAME";
     }
-
 }

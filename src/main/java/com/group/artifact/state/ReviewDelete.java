@@ -22,9 +22,7 @@ public class ReviewDelete extends NeedBookNameState {
             stateContainer.remove(messageVo);
             return "NO BOOK NAME";
         } else if (books.size() == 1) {
-            service.deleteReview(books.get(0).getTitle(), messageVo.getSlackId(), messageVo.getChannel());
-            stateContainer.remove(messageVo);
-            return "DELETE REVIEW";
+            return serviceWithBookName(messageVo, books.get(0).getTitle());
         } else {
             service.selectBook(messageVo.getChannel(), books);
             stateContainer.put(messageVo, new ProxyWithManyBookNames(books, this));

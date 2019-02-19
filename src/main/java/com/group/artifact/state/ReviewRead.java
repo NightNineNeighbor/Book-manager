@@ -22,9 +22,7 @@ public class ReviewRead extends NeedBookNameState {
             stateContainer.remove(messageVo);
             return "NO BOOK NAME";
         } else if (books.size() == 1) {
-            service.readReview(books.get(0).getTitle(), messageVo.getChannel());
-            stateContainer.remove(messageVo);
-            return "READ REVIEW";
+            return serviceWithBookName(messageVo, books.get(0).getTitle());
         } else {
             service.selectBook(messageVo.getChannel(), books);
             stateContainer.put(messageVo, new ProxyWithManyBookNames(books, this));
