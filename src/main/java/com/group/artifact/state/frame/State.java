@@ -1,4 +1,4 @@
-package com.group.artifact.state.state_interface;
+package com.group.artifact.state.frame;
 
 import com.group.artifact.state_collection.ChatBotState;
 import com.group.artifact.vo.MessageVo;

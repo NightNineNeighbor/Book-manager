@@ -1,7 +1,7 @@
 package com.group.artifact.stateStarter;
 
 import com.group.artifact.state.*;
-import com.group.artifact.state.state_interface.State;
+import com.group.artifact.state.frame.State;
 
 import java.util.function.Supplier;
 
