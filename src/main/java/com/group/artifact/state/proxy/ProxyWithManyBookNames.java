@@ -1,11 +1,9 @@
 package com.group.artifact.state.proxy;
 
 import com.group.artifact.domain.Book;
-import com.group.artifact.state.container.StateContainer;
-import com.group.artifact.state.frame.NeedBookNameState;
-import com.group.artifact.state.frame.State;
+import com.group.artifact.state.NeedBookNameState;
+import com.group.artifact.state.State;
 import com.group.artifact.vo.MessageVo;
-import com.group.artifact.service.SlackService;
 
 import java.util.List;
 

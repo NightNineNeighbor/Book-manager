@@ -1,10 +1,10 @@
-package com.group.artifact.state;
+package com.group.artifact.state.concrete;
 
 import com.group.artifact.domain.Book;
 import com.group.artifact.service.SlackService;
 import com.group.artifact.stateStarter.Command;
 import com.group.artifact.state.container.StateContainer;
-import com.group.artifact.state.frame.State;
+import com.group.artifact.state.State;
 import com.group.artifact.state.proxy.ProxyWithManyBookNames;
 import com.group.artifact.vo.MessageVo;
 

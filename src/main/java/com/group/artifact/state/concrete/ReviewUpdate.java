@@ -1,16 +1,16 @@
-package com.group.artifact.state;
+package com.group.artifact.state.concrete;
 
 import com.group.artifact.domain.Book;
-import com.group.artifact.service.SlackService;
 import com.group.artifact.state.container.StateContainer;
-import com.group.artifact.state.frame.NeedBookNameState;
+import com.group.artifact.state.State;
 import com.group.artifact.state.proxy.ProxyWithManyBookNames;
 import com.group.artifact.vo.MessageVo;
+import com.group.artifact.service.SlackService;
 
 import java.util.List;
 
-public class ReviewDelete extends NeedBookNameState {
-    public ReviewDelete(SlackService service, StateContainer stateContainer) {
+public class ReviewUpdate extends State {
+    public ReviewUpdate(SlackService service, StateContainer stateContainer) {
         super(service, stateContainer);
     }
 
@@ -22,19 +22,14 @@ public class ReviewDelete extends NeedBookNameState {
             stateContainer.remove(messageVo);
             return "NO BOOK NAME";
         } else if (books.size() == 1) {
-            return serviceWithBookName(messageVo, books.get(0).getTitle());
+            service.askReviewContents(messageVo.getChannel());
+            stateContainer.put(messageVo, new ReviewUpdateExpectContents(service, stateContainer, books.get(0).getTitle()));
+            return "ASK CONTENTS";
         } else {
             service.selectBook(messageVo.getChannel(), books);
-            stateContainer.put(messageVo, new ProxyWithManyBookNames(books, this));
+            stateContainer.put(messageVo, new ProxyWithManyBookNames(books, new ReviewUpdateExpectContents(service, stateContainer)));
             return "MANY BOOK";
         }
-    }
-
-    @Override
-    public String serviceWithBookName(MessageVo messageVo, String bookName) {
-        service.deleteReview(bookName, messageVo.getSlackId(), messageVo.getChannel());
-        stateContainer.remove(messageVo);
-        return "DELETE REVIEW";
     }
 
 }

@@ -1,7 +1,7 @@
-package com.group.artifact.state;
+package com.group.artifact.state.concrete;
 
 import com.group.artifact.state.container.StateContainer;
-import com.group.artifact.state.frame.State;
+import com.group.artifact.state.State;
 import com.group.artifact.vo.MessageVo;
 import com.group.artifact.service.SlackService;
 

@@ -1,12 +1,11 @@
 package com.group.artifact.stateStarter;
 
 import com.group.artifact.service.SlackService;
-import com.group.artifact.state.*;
+import com.group.artifact.state.concrete.*;
 import com.group.artifact.state.container.StateContainer;
-import com.group.artifact.state.frame.State;
+import com.group.artifact.state.State;
 
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 
 public enum Command {
     BOOK_INFO(BookInfoState::new, "!정보"),

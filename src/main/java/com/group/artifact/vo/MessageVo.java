@@ -2,7 +2,7 @@ package com.group.artifact.vo;
 
 import com.group.artifact.service.SlackService;
 import com.group.artifact.state.container.StateContainer;
-import com.group.artifact.state.frame.State;
+import com.group.artifact.state.State;
 import com.group.artifact.stateStarter.Command;
 
 public class MessageVo {

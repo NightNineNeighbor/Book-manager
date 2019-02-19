@@ -1,4 +1,4 @@
-package com.group.artifact.state.frame;
+package com.group.artifact.state;
 
 import com.group.artifact.state.container.StateContainer;
 import com.group.artifact.vo.MessageVo;

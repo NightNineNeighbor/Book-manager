@@ -1,16 +1,16 @@
-package com.group.artifact.state;
+package com.group.artifact.state.concrete;
 
 import com.group.artifact.domain.Book;
+import com.group.artifact.service.SlackService;
 import com.group.artifact.state.container.StateContainer;
-import com.group.artifact.state.frame.NeedBookNameState;
+import com.group.artifact.state.NeedBookNameState;
 import com.group.artifact.state.proxy.ProxyWithManyBookNames;
 import com.group.artifact.vo.MessageVo;
-import com.group.artifact.service.SlackService;
 
 import java.util.List;
 
-public class ReviewRead extends NeedBookNameState {
-    public ReviewRead(SlackService service, StateContainer stateContainer) {
+public class ReviewDelete extends NeedBookNameState {
+    public ReviewDelete(SlackService service, StateContainer stateContainer) {
         super(service, stateContainer);
     }
 
@@ -32,8 +32,9 @@ public class ReviewRead extends NeedBookNameState {
 
     @Override
     public String serviceWithBookName(MessageVo messageVo, String bookName) {
-        service.readReview(bookName, messageVo.getChannel());
+        service.deleteReview(bookName, messageVo.getSlackId(), messageVo.getChannel());
         stateContainer.remove(messageVo);
-        return "READ REVIEW";
+        return "DELETE REVIEW";
     }
+
 }
