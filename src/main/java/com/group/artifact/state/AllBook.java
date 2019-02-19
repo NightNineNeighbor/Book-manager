@@ -5,9 +5,13 @@ import com.group.artifact.state.frame.State;
 import com.group.artifact.vo.MessageVo;
 import com.group.artifact.service.SlackService;
 
-public class AllBook implements State {
+public class AllBook extends State {
+    public AllBook(SlackService service, StateContainer stateContainer) {
+        super(service, stateContainer);
+    }
+
     @Override
-    public String doService(SlackService service, MessageVo messageVo, StateContainer stateContainer) {
+    public String doService(MessageVo messageVo) {
         service.allBook(messageVo.getChannel());
         return "ALL BOOK";
     }

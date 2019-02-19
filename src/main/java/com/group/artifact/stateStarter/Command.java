@@ -1,8 +1,11 @@
 package com.group.artifact.stateStarter;
 
+import com.group.artifact.service.SlackService;
 import com.group.artifact.state.*;
+import com.group.artifact.state.container.StateContainer;
 import com.group.artifact.state.frame.State;
 
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public enum Command {
@@ -19,10 +22,10 @@ public enum Command {
     USAGE(Usage::new, "!사용법");
 
 
-    private Supplier<State> stateIniter;
+    private BiFunction<SlackService, StateContainer, State> stateIniter;
     private String matcher;
 
-    Command(Supplier<State> stateIniter, String matcher) {
+    Command(BiFunction<SlackService, StateContainer, State> stateIniter, String matcher) {
         this.stateIniter = stateIniter;
         this.matcher = matcher;
     }
@@ -40,8 +43,8 @@ public enum Command {
         return Command.NO_COMMAND;
     }
 
-    public State initState() {
-        return this.stateIniter.get();
+    public State initState(SlackService service, StateContainer container) {
+        return this.stateIniter.apply(service, container);
     }
 
     public String removeMatcher(String text) {

@@ -1,13 +1,17 @@
 package com.group.artifact.state;
 
+import com.group.artifact.service.SlackService;
 import com.group.artifact.state.container.StateContainer;
 import com.group.artifact.state.frame.State;
 import com.group.artifact.vo.MessageVo;
-import com.group.artifact.service.SlackService;
 
-public class MyReviews implements State {
+public class MyReviews extends State {
+    public MyReviews(SlackService service, StateContainer stateContainer) {
+        super(service, stateContainer);
+    }
+
     @Override
-    public String doService(SlackService service, MessageVo messageVo, StateContainer stateContainer) {
+    public String doService(MessageVo messageVo) {
         service.allReview(messageVo.getSlackId(), messageVo.getChannel());
         return "MY REVIEWS";
     }

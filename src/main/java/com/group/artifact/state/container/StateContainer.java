@@ -17,7 +17,7 @@ public class StateContainer {
 
     public String doService(MessageVo messageVo) {
         State currentState = currentState(messageVo);
-        return currentState.doService(service, messageVo, this);
+        return currentState.doService(messageVo);
     }
 
     public void put(MessageVo messageVo, State state) {
@@ -30,12 +30,12 @@ public class StateContainer {
 
     private State currentState(MessageVo messageVo) {
         if (messageVo.isInterrupt()) {
-            return messageVo.initState();
+            return messageVo.initState(service, this);
         }
 
         if (savedState.containsKey(messageVo.getHashKey())) {
             return savedState.get(messageVo.getHashKey());
         }
-        return messageVo.initState();
+        return messageVo.initState(service, this);
     }
 }

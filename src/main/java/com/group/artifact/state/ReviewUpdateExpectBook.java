@@ -10,10 +10,14 @@ import com.group.artifact.vo.MessageVo;
 
 import java.util.List;
 
-public class ReviewUpdateExpectBook implements State {
+public class ReviewUpdateExpectBook extends State {
+
+    public ReviewUpdateExpectBook(SlackService service, StateContainer stateContainer) {
+        super(service, stateContainer);
+    }
 
     @Override
-    public String doService(SlackService service, MessageVo messageVo, StateContainer stateContainer) {
+    public String doService(MessageVo messageVo) {
         Command command = messageVo.getCommand();
         if (command == Command.NO_COMMAND) {
             List<Book> books = service.search(messageVo.getText());
@@ -23,15 +27,15 @@ public class ReviewUpdateExpectBook implements State {
                 return "NO BOOK NAME";
             } else if (books.size() == 1) {
                 service.askReviewContents(messageVo.getChannel());
-                stateContainer.put(messageVo, new ReviewUpdateExpectContents(books.get(0).getTitle()));
+                stateContainer.put(messageVo, new ReviewUpdateExpectContents(service, stateContainer, books.get(0).getTitle()));
                 return "ASK REVIEW CONTENTS";
             } else {
                 service.selectBook(messageVo.getChannel(), books);
-                stateContainer.put(messageVo, new ProxyWithManyBookNames(books, new ReviewUpdateExpectContents()));
+                stateContainer.put(messageVo, new ProxyWithManyBookNames(books, new ReviewUpdateExpectContents(service,stateContainer)));
                 return "MANY BOOK";
             }
         }
-        return command.initState().doService(service, messageVo, stateContainer);
+        return command.initState(service, stateContainer).doService(messageVo);
     }
 
 
