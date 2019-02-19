@@ -21,11 +21,11 @@ public class StateContainer {
     }
 
     public void put(MessageVo messageVo, State state) {
-        savedState.put(messageVo.getHashKey(), state);
+        savedState.put(messageVo.getSlackId(), state);
     }
 
     public void remove(MessageVo messageVo) {
-        savedState.remove(messageVo.getHashKey());
+        savedState.remove(messageVo.getSlackId());
     }
 
     private State currentState(MessageVo messageVo) {
@@ -33,8 +33,8 @@ public class StateContainer {
             return messageVo.initState(service, this);
         }
 
-        if (savedState.containsKey(messageVo.getHashKey())) {
-            return savedState.get(messageVo.getHashKey());
+        if (savedState.containsKey(messageVo.getSlackId())) {
+            return savedState.get(messageVo.getSlackId());
         }
         return messageVo.initState(service, this);
     }

@@ -30,10 +30,6 @@ public class MessageVo {
         return text;
     }
 
-    public String getSlackId() {
-        return slackId;
-    }
-
     public String getChannel() {
         return channel;
     }
@@ -46,7 +42,7 @@ public class MessageVo {
         return this.command == Command.EXIT_COMMAND_MODE || command == Command.USAGE;
     }
 
-    public String getHashKey() {
+    public String getSlackId() {
         return this.slackId;
     }
 }
