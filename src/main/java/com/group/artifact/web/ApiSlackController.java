@@ -1,7 +1,7 @@
 package com.group.artifact.web;
 
 import com.group.artifact.vo.MessageVo;
-import com.group.artifact.state_collection.ChatBotState;
+import com.group.artifact.state.container.StateContainer;
 import com.group.artifact.vo.SlackAcceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class ApiSlackController {
     private static final Logger logger = LoggerFactory.getLogger(ApiSlackController.class);
 
     @Autowired
-    private ChatBotState chatBotState;
+    private StateContainer stateContainer;
 
     @PostMapping("/listener")
     public String listener(@RequestBody SlackAcceptor acceptor) {
@@ -26,6 +26,6 @@ public class ApiSlackController {
         }
 
         MessageVo messageVo = acceptor.parse();
-        return chatBotState.doService(messageVo);
+        return stateContainer.doService(messageVo);
     }
 }

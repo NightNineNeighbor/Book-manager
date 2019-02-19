@@ -1,4 +1,4 @@
-package com.group.artifact.state_collection;
+package com.group.artifact.state.container;
 
 import com.group.artifact.service.SlackService;
 import com.group.artifact.state.frame.State;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class ChatBotState {
+public class StateContainer {
     @Autowired
     private SlackService service;
     private Map<String, State> savedState = new HashMap<>();

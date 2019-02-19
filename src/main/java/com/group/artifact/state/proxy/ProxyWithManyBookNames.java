@@ -1,7 +1,7 @@
 package com.group.artifact.state.proxy;
 
 import com.group.artifact.domain.Book;
-import com.group.artifact.state_collection.ChatBotState;
+import com.group.artifact.state.container.StateContainer;
 import com.group.artifact.state.frame.NeedBookNameState;
 import com.group.artifact.state.frame.State;
 import com.group.artifact.vo.MessageVo;
@@ -19,23 +19,23 @@ public class ProxyWithManyBookNames implements State {
     }
 
     @Override
-    public String doService(SlackService service, MessageVo messageVo, ChatBotState chatBotState) {
+    public String doService(SlackService service, MessageVo messageVo, StateContainer stateContainer) {
         String text = messageVo.getText();
         int index;
         try {
             index = Integer.parseInt(text);
         } catch (NumberFormatException e) {
             service.send("잘못된 입력입니다.", messageVo.getChannel());
-            chatBotState.remove(messageVo);
+            stateContainer.remove(messageVo);
             return "WRONG INPUT";
         }
 
         if (index > books.size()) {
             service.send("잘못된 입력입니다", messageVo.getChannel());
-            chatBotState.remove(messageVo);
+            stateContainer.remove(messageVo);
             return "WRONG INPUT";
         }
 
-        return needBookNameState.serviceWithBookName(service, messageVo, books.get(index-1).getTitle(), chatBotState);
+        return needBookNameState.serviceWithBookName(service, messageVo, books.get(index-1).getTitle(), stateContainer);
     }
 }
