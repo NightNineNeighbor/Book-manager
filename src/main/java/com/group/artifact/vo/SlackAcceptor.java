@@ -1,7 +1,6 @@
 package com.group.artifact.vo;
 
 import com.group.artifact.stateStarter.Command;
-import com.group.artifact.service.ServiceResolver;
 
 public class SlackAcceptor {
     SlackEvent event;
@@ -47,9 +46,9 @@ public class SlackAcceptor {
     }
 
 
-    public ServiceResolver parse() {
+    public MessageVo parse() {
         if (event == null) {
-            return new ServiceResolver(Command.DO_NOTHING, "EVENT IS NULL", "", "");
+            return new MessageVo(Command.DO_NOTHING, "EVENT IS NULL", "", "");
         }
         return event.parse();
     }

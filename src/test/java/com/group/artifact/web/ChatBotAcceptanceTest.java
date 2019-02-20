@@ -16,8 +16,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
 
-public class ApiSlackControllerTest extends AcceptanceTest {
-    private static final Logger log = LoggerFactory.getLogger(ApiSlackControllerTest.class);
+public class ChatBotAcceptanceTest extends AcceptanceTest {
+    private static final Logger log = LoggerFactory.getLogger(ChatBotAcceptanceTest.class);
     @Autowired
     private ReviewRepository reviewRepository;
 
@@ -195,7 +195,7 @@ public class ApiSlackControllerTest extends AcceptanceTest {
 
         HttpEntity<String> request = makeRequest(json);
 
-        ResponseEntity<String> response = template().postForEntity("/api/valid", request, String.class);
+        ResponseEntity<String> response = template().postForEntity("/api/listener", request, String.class);
         log.info("response : {}", response.toString());
         softly.assertThat(response.getBody()).isEqualTo(challengeToken);
     }

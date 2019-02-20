@@ -1,11 +1,14 @@
 package com.group.artifact.stateStarter;
 
-import com.group.artifact.state.*;
+import com.group.artifact.service.SlackService;
+import com.group.artifact.state.concrete.*;
+import com.group.artifact.state.container.StateContainer;
+import com.group.artifact.state.State;
 
-import java.util.function.Supplier;
+import java.util.function.BiFunction;
 
 public enum Command {
-    BOOK_INFO(BookInfo::new, "!정보"),
+    BOOK_INFO(BookInfoState::new, "!정보"),
     REVIEW_READ(ReviewRead::new, "!리뷰조회"),
     REVIEW_CREATE(ReviewUpdate::new, "!리뷰등록"),
     REVIEW_UPDATE(ReviewUpdate::new, "!리뷰수정"),
@@ -18,10 +21,10 @@ public enum Command {
     USAGE(Usage::new, "!사용법");
 
 
-    private Supplier<State> stateIniter;
+    private BiFunction<SlackService, StateContainer, State> stateIniter;
     private String matcher;
 
-    Command(Supplier<State> stateIniter, String matcher) {
+    Command(BiFunction<SlackService, StateContainer, State> stateIniter, String matcher) {
         this.stateIniter = stateIniter;
         this.matcher = matcher;
     }
@@ -39,8 +42,8 @@ public enum Command {
         return Command.NO_COMMAND;
     }
 
-    public State initState() {
-        return this.stateIniter.get();
+    public State initState(SlackService service, StateContainer container) {
+        return this.stateIniter.apply(service, container);
     }
 
     public String removeMatcher(String text) {
